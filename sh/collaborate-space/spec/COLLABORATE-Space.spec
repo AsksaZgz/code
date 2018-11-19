@@ -17,7 +17,7 @@ COLLABORATE Space
 %build
 %install
 # Create directory
-install -m 0755 -d $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space-1
+install -m 0755 -d $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space
 install -m 0644 admin.war $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/admin.war
 
 %files
