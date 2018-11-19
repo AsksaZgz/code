@@ -10,7 +10,7 @@ URL:            https://clearone.com
 Source0:        COLLABORATE-Space-1.0.tar.gz
 
 %description
-Description
+COLLABORATE Space
 
 %prep
 %setup -q
