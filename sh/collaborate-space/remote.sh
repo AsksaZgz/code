@@ -2,6 +2,6 @@
 
 _REMOTE_CREATE_TARBALL='tar czf COLLABORATE-Space-1.0.tar.gz COLLABORATE-Space'
 
-cd /root/rpmbuild
+cd /rpmSources
 
 $_REMOTE_CREATE_TARBALL

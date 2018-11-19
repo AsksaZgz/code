@@ -35,7 +35,9 @@ function remoteExec()
 
 function main()
 {
-    sendSource /root/git/Admin/war/admin.war
-    remoteExec '/root/sh/code/collaborate-space/remote.sh'
+#    sendSource /root/git/Admin/war/admin.war
+    remoteExec '/root/git/code/sh/collaborate-space/remote.sh'
 
 }
+
+main
