@@ -8,3 +8,7 @@
 #git commit -m "first commit"
 #git remote add origin https://github.com/AsksaZgz/ssa.git
 #git push -u origin master
+
+
+### Install Git
+### yum install git:i
