@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo copia tablas GPROY 
+/opt/mysql/bin/mysql < flush.portalCorpATCANET.txt
+
+
+fecha=`date +%Y%m%d_%H%M%S`
+tar -zcvf /mnt/copiaSeguridad/backup-tauro/diaria/datos/tablasGPROY$fecha.tgz  /opt/mysql/data/portalCorpATCANET/GPROY_*
+

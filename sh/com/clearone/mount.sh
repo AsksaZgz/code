@@ -1,0 +1,2 @@
+mount.cifs \\\\192.168.1.253\\Current_Releases   /home/jesus/current_releases -o user=jesus.bernad,uid=5000,gid=6000
+mount.cifs \\\\192.168.1.253\\Versions   /home/jesus/versions -o user=jesus.bernad,uid=5000,gid=6000

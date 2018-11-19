@@ -1,0 +1,6 @@
+<Context path="/portalAtcanet" docBase="/tallerlocal/atcanet/pCorpATCANET/web" swallowOutput="true">
+  <Logger className="org.apache.catalina.logger.FileLogger"
+          prefix="localhost_portalAtcanet_log." suffix=".txt"
+          timestamp="true"/>
+</Context>
+

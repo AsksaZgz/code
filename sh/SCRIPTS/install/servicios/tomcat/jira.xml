@@ -1,0 +1,14 @@
+<Context path="/jira" docBase="/tallerlocal/atcanet/jira/atlassian-jira-3.1.1.war" swallowOutput="true">
+  <Resource name="jdbc/JiraDS" auth="Container" type="javax.sql.DataSource"
+    username="jira"
+    password="atcanet"
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://localhost/jira?autoReconnect=true"/>
+  <Resource name="UserTransaction" auth="Container" type="javax.transaction.UserTransaction"
+    factory="org.objectweb.jotm.UserTransactionFactory"
+    jotm.timeout="60"/>
+  <Manager className="org.apache.catalina.session.PersistentManager" saveOnRestart="false"/>
+  <Logger className="org.apache.catalina.logger.FileLogger"
+          prefix="localhost_jira_log." suffix=".txt"
+          timestamp="true"/>
+</Context>

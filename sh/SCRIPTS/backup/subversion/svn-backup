@@ -1,0 +1,6 @@
+# Copy this file to /etc/cron.d
+
+# Backup SVN on 15th of every month at 00:00h
+#min hour dayofmonth month dayofweek user command
+0 0 15 * * root /root/bin/svn-backup.sh
+

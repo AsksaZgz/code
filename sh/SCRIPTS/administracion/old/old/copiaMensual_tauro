@@ -1,0 +1,52 @@
+#!/bin/bash
+ficheroLog=/mnt/copiaSeguridad/log.txt
+
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia mensual." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+dirs=`ls /atcanet/usuarios`
+echo $dirs
+
+for f in $dirs ;
+do
+  mkdir /mnt/copiaSeguridad/usuarios/mensual/$f
+  $csbin -i 3 -l $ficheroLog /atcanet /mnt/copiaSeguridad/usuarios/mensual/$f cs_$f_ usuarios/$f
+done
+
+#Copia de seguridad de los buzones de correo
+files=`ls /var/mail`
+for f in $files ;
+do
+   mkdir -p /mnt/copiaSeguridad/mail/mensual/$f
+      $csbin -c 3 -l $ficheroLog /var/mail /mnt/copiaSeguridad/mail/mensual/$f $f $f
+done
+
+$csbin -i 3 -l $ficheroLog /atcanet /mnt/copiaSeguridad/tallerdesoftware/mensual tallerdesoftware tallerdesoftware/CVSREPOSITORY tallerdesoftware/tools
+
+$csbin -i 3 -l $ficheroLog /atcanet /mnt/copiaSeguridad/desarrollo/mensual desarrollo desarrollo/scripts desarrollo/programasEnRed/util
+
+$csbin -c 3 -l $ficheroLog /tallerlocal/sys/notes /mnt/copiaSeguridad/notes/mensual notes lotus/notesdata/*.cnf lotus/notesdata/*.ini lotus/replicas
+
+$csbin -i 3 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data /mnt/copiaSeguridad/portal-atcanet/mensual/data cs_datosportal store TablonNoticias webMail/store
+
+$csbin -c 3 -l $ficheroLog /tallerlocal/atcanet/gestionHoras/data/store /mnt/copiaSeguridad/gestionHoras/mensual cs_copiaSeguridad gestionHoras
+
+$csbin -c 3 -l $ficheroLog /opt/openldap /mnt/copiaSeguridad/openldap/mensual cs_openldap etc/openldap var/openldap-ldbm
+
+$csbin -i 3 -l $ficheroLog /opt/mysql/data  /mnt/copiaSeguridad/myqsl/mensual  cs_mysql_tauro  portalCorpATCANET
+
+
+dirs=`ls /tallerlocal/atcanet/pCorpATCANET/data/webMail/users`
+for i in $dirs ;
+do
+  mkdir /mnt/copiaSeguridad/portal-atcanet/mensual/webmailusers/$i
+  $csbin -i 3 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data/webMail/users     \
+                                                                      /mnt/copiaSeguridad/portal-atcanet/mensual/webmailusers/$i \
+                                                                      cs_$i                                                      \
+                                                                      $i
+done                                                                    

@@ -1,0 +1,32 @@
+
+<html>
+
+    <head>
+	<title>Intranet AtcaNet</title>
+	<meta http-equiv="Content-Type" content="text/html; iso-8859-15" />
+    </head>
+
+    <body>
+	<table align="center">
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="emergencia">AtcaNet - Plan de Emergencias</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="/gestion/">AtcaNet - Gestión Integrada</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="/phpldapadmin/">AtcaNet - LDAP</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="http://toro.atcanet:8081/portalAtcanet/portalCorporativo/portal1/portal.jsp">AtcaNet - Portal Corporativo</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td>
+		<table>

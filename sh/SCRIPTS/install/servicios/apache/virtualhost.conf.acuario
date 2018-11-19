@@ -1,0 +1,25 @@
+
+<VirtualHost *:80>
+    DocumentRoot /tallerlocal/atcanet/atcanet
+    ServerName www.atcanet.com:80
+    ErrorLog logs/www.atcanet.com-error_log
+    <Directory "/tallerlocal/atcanet/atcanet">
+	AllowOverride All
+	Order allow,deny
+	Allow from all
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot /tallerlocal/atcanet/atca
+    ServerName demo.atcanet.com:80
+    ErrorLog logs/demo.atcanet.com-error_log
+</VirtualHost>
+
+#<VirtualHost *:80>
+#    DocumentRoot /tallerlocal/atcanet/jira
+#    ServerName soporte.atcanet.com:80
+#    ErrorLog logs/soporte.atcanet.com-error_log
+#    JkMount / ajp13
+#    JkMount /* ajp13
+#</VirtualHost>

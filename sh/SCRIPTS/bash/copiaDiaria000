@@ -1,0 +1,77 @@
+#!/bin/bash
+mount -a -t nfs
+ficheroLog=/mnt/copiaSeguridad/log.txt
+
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia diaria." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+# Borramos todos los core (del jbuilder o el forte)
+find /atcanet/usuarios -name core -exec rm {} \;
+
+dirs=`ls /atcanet/usuarios`
+echo $dirs
+
+for f in $dirs ;
+do
+  mkdir /mnt/copiaSeguridad/usuarios/diaria/$f
+  $csbin -i 5 -l $ficheroLog /atcanet /mnt/copiaSeguridad/usuarios/diaria/$f cs_$f_ usuarios/$f
+done
+
+
+#Copia de seguridad de los buzones de correo
+files=`ls /var/mail`
+
+for f in $files ;
+do
+  mkdir -p /mnt/copiaSeguridad/mail/diaria/$f      
+  $csbin -c 5 -l $ficheroLog /var/mail /mnt/copiaSeguridad/mail/diaria/$f $f $f            
+done
+            
+
+$csbin -i 5 -l $ficheroLog /atcanet /mnt/copiaSeguridad/tallerdesoftware/diaria tallerdesoftware tallerdesoftware/CVSREPOSITORY tallerdesoftware/tools proyectos/internos/gestionHoras
+
+$csbin -i 5 -l $ficheroLog /atcanet /mnt/copiaSeguridad/desarrollo/diaria desarrollo desarrollo/scripts desarrollo/programasEnRed/util
+
+$csbin -i 5 -l $ficheroLog /atcanet /mnt/copiaSeguridad/documentacion/diaria documentacion documentacion/direccion_tecnica  documentacion/implantaciones/clientes/CIAC
+
+$csbin -c 5 -l $ficheroLog /tallerlocal/sys/notes /mnt/copiaSeguridad/notes/diaria notes lotus/notesdata/*.cnf lotus/notesdata/*.ini lotus/replicas
+
+$csbin -i 5 -l $ficheroLog / /mnt/copiaSeguridad/tauro/diaria etc etc
+
+$csbin -i 5 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data /mnt/copiaSeguridad/portal-atcanet/diaria/data cs_datosportal documentacion gastos noticias portalCorporativo webMail/store
+
+$csbin -i 5 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET /mnt/copiaSeguridad/portal-atcanet/diaria/config cs_cnfportal cnf data/cnf
+
+$csbin -c 5 -l $ficheroLog /tallerlocal/atcanet/gestionHoras/data/store  /mnt/copiaSeguridad/gestionHoras/diaria/ cs_gestionHoras gestionHoras
+
+$csbin -c 5 -l $ficheroLog /opt/openldap /mnt/copiaSeguridad/openldap/diaria cs_openldap etc/openldap var/openldap-ldbm
+
+$csbin -i 5 -l $ficheroLog /opt/mysql/data  /mnt/copiaSeguridad/mysql/diaria  cs_mysql_tauro  portalCorpATCANET
+
+dirs=`ls /tallerlocal/atcanet/pCorpATCANET/data/webMail/users`
+for i in $dirs ;
+do
+mkdir /mnt/copiaSeguridad/pCorpATCANET/diaria/webmailusers/$i
+$csbin -i 5 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data/webMail/users    \
+                                                                    /mnt/copiaSeguridad/portal-atcanet/diaria/webmailusers/$i \
+                                                                    cs_$i                                                     \
+                                                                    $i
+done
+                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+# Mira por virus en el tauro
+#echo `date` >/root/miravirus.txt
+#/atcanet/desarrollo/scripts/bash/virussearch /atcanet/desarrollo/bazar
+#/atcanet/desarrollo/scripts/bash/virussearch /atcanet/tallerdesoftware
+#/atcanet/desarrollo/scripts/bash/virussearch /atcanet/documentacion
+#/atcanet/desarrollo/scripts/bash/virussearch /atcanet/proyectos
+#/atcanet/desarrollo/scripts/bash/virussearch /atcanet/programasEnRed
+#echo `date` >>/root/miravirus.txt
+
+        

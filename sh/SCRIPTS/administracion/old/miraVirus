@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ "$1" != "" ]; then
+  pavcl $1 -auto < entradaPAVCL
+ 
+  rc=$?
+  if [ $rc = "0" ]; then
+    msj="Antivirus ejecutado correctamente"
+  elif [ $rc = "1" ]; then
+    msj="Error: $rc. Memoria insuficiente / Directorio invalido"
+  elif [ $rc = "2" ]; then
+    msj="Error: $rc. Numero de ficheros abiertos excedido"
+  elif [ $rc = "3" ]; then
+    msj="Error: $rc. Parametros incorrectos"
+  elif [ $rc = "4" ]; then
+    msj="Error: $rc. Proceso abortado por el usuario"
+  elif [ $rc = "5" ]; then
+    msj="Error: $rc. No encontrado AP.VIR"
+  elif [ $rc = "6" ]; then
+    msj="Error: $rc. Error de lectura AP.VIR"
+  elif [ $rc = "7" ]; then
+    msj="Error: $rc. No encontrado AP.TEM"
+  elif [ $rc = "8" ]; then
+    msj="Error: $rc. Version incorrecta Sistema Operativo"
+  elif [ $rc = "9" ]; then
+    msj="Error: $rc. Error al leer PAVCL.MSG"
+  elif [ $rc = "10" ]; then
+    msj="Error: $rc. No encontrado PANDA.CHP"
+  elif [ $rc = "11" ]; then
+    msj="Error: $rc. Programa no soportado desde red"
+  elif [ $rc = "12" ]; then
+    msj="Error: $rc. OJO!!!! Virus no desinfectado correctamente"
+  elif [ $rc = "14" ]; then
+    msj="Error: $rc. Se encontraron ficheros con fecha y hora sospechosa"
+  elif [ $rc -gt 128 ]; then
+    numVirus=`expr $rc - 128`
+    msj="Error: $rc. OJO!!!! Virus encontrados: $numVirus. "
+  fi
+  
+  maquina=`uname -n`
+  fecha=`date`
+  echo "pavcl: $fecha : $maquina : $1 : rc=$rc : $msj" >> $2
+  
+else
+  echo "uso: miraVirus <directorio>"
+fi
+exit $rc

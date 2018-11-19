@@ -1,0 +1,179 @@
+#!/bin/bash
+
+#set -x
+
+
+# Realiza la extraccion de informacion de la copia de seguridad
+################################################################
+
+function doExtraction()
+{
+  action=$1
+  sourceDir=$2
+  dirToExtract=$3
+  maskToExtract=$4
+  
+  strOutput=>/dev/null
+
+  if [ "$action" = "extract" ]; then
+    action="x";
+  else
+    action="t";
+    strOutput=
+  fi
+
+  name=`ls -t $sourceDir/* | gawk '/Full/ {                  
+    ndxFull = index($0, "Full"); 
+    prefix = substr($0, 0, ndxFull - 1); 
+    id = substr($0, 5 + ndxFull, 1);
+    print id " " prefix
+    exit 0;
+  }'`
+
+  f=1;
+
+  end="n"
+
+  prefix=`echo $name | gawk '{print $2}'`
+  id=`echo $name | gawk '{print $1}'`
+  filename=$prefix"Full_"$id".tar.gz"
+
+  finalDir=$dirToExtract/v0
+  mkdir -p $finalDir
+  tar ${action}vzfC $filename $finalDir $maskToExtract $strOutput 2>/dev/null
+  
+  error=0;
+  
+  if [ "$?" != "0" ]; then
+    let "error = error + 1"
+  fi
+
+  while [ "$end" = "n" ]
+  do 
+    prefix=`echo $name | gawk '{print $2}'`
+    id=`echo $name | gawk '{print $1}'`
+    filename=$prefix"Inc"$f"_"$id".tar.gz"
+
+    if [ -r $filename ]; then 
+      finalDir=$dirToExtract/v$f
+      mkdir -p $finalDir
+      tar ${action}vzfC $filename $finalDir $maskToExtract $strOutput 2>/dev/null
+      
+      if [ "$?" != "0" ]; then
+        let "error = error + 1"
+      fi
+    else
+      end="y";
+    fi
+  
+    let "f = f + 1";
+  done
+  
+  return $error
+}
+
+
+function usage()
+{
+  echo "Uso: csExtract accion [copia  [version  [mascara]]]"
+  echo "     donde accion:"
+  echo "        l             Lista, da informacion sobre copias:"
+  echo "                      * sin informar nada lista las copias disponibles"
+  echo "                      * informando copia lista las versiones disponibles de la copia"
+  echo "                      * informando copia y version lista el contenido de la copia"
+  echo "                      * informando copia, version y mascara lista el contenido de la"
+  echo "                         copia que coincida con la mascara"
+  echo ""
+  echo "        x             Extrae ficheros de la copia de seguridad:"
+  echo "                      * informando copia y version extrae el contenido de la copia"
+  echo "                      * informando tambien mascara los ficheros que coincidan con la mascara"
+  echo ""
+  echo "     ejemplos:"
+  echo ""
+  echo "     csExtract l desarrollo                        Muestra las copias hechas de notes"
+  echo "     csExtract x desarrollo diaria scripts/cmd/*   Extrae el fichero ab.nsf de la copia"
+}
+
+
+# Main code
+###################
+
+dirZipDest=/atcanet/desarrollo/scripts/bash/recover/$USER
+csRootDir=/mnt/copiaSeguridad
+csInfo=csInfo.txt
+blanks=" ......................................................................"
+
+if [ $# -lt 1 ]; then
+  usage
+  exit 1
+fi
+
+action=$1
+shift
+
+csname=$1
+shift
+
+version=$1
+shift
+
+mask=$*
+
+error=0
+
+if [ "$action" = "l" ]; then
+  csDir=$csRootDir
+
+  if [ "$csname" != "" ]; then
+    csDir=$csDir/$csname
+  fi
+
+  if [ "$version" != "" ]; then
+    csDir=$csDir/$version
+
+    doExtraction "list" $csDir "recover" $mask
+    error=$?
+  else
+    dirs=`ls $csDir`
+  
+    for file in $dirs
+    do
+      if [ -d $csDir/$file ] ; then
+        if [ -r $csDir/$file/$csInfo ] ; then
+          nb=`expr 20 - length "$file" `
+          prefix=$file`expr substr "$blanks" 1 $nb`
+          echo $prefix `cat $csDir/$file/$csInfo`
+        fi
+      fi
+    done
+  fi
+elif [ "$action" = "x" ]; then
+  csDir=$csRootDir
+
+  if [ "$csname" = "" ]  || [ "$version" = "" ]; then
+    echo ""
+    echo "csExtract: debe especificarse un nombre de copia y version."
+    echo ""
+    usage
+  else
+    rm $dirZipDest/recover.zip 2>/dev/null
+    doExtraction "extract" $csDir/$csname/$version "$dirZipDest/versions" $mask
+    error=$?
+    
+    pushd .
+    mkdir -p $dirZipDest
+    cd $dirZipDest
+    
+    zip -r1 recover.zip versions/* >/dev/null 2>&1
+    rm -R versions 2>/dev/null
+    
+    popd
+    
+  fi
+fi
+
+if [ $error -ne 0 ]; then
+  echo No se ha podido completar la operacion
+fi
+
+exit 0

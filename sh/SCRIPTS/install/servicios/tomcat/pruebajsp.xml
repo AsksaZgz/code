@@ -1,0 +1,6 @@
+<Context path="/pruebajsp" docBase="/tallerlocal/atcanet/prueba/jsp" swallowOutput="true">
+  <Logger className="org.apache.catalina.logger.FileLogger"
+          prefix="localhost_pruebajsp_log." suffix=".txt"
+          timestamp="true"/>
+</Context>
+

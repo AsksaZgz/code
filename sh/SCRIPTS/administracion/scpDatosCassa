@@ -1,0 +1,32 @@
+#!/bin/bash
+
+file_log=/tallerlocal/sys/cron/scpDatosCassa.log
+
+echo ARRANCANDO SCPDATOSCASSA >>$file_log
+pushd .
+
+echo LOG... >>$file_log
+exec >> $file_log
+exec 2>> $file_log
+date
+
+DIR_COPIA_SEG=/tallerlocal/sys/csAplsProd/postal_discovirtual/cassa
+
+DATA_DIR_LOCAL=/tallerlocal/atcanet/cajafuerte/users/ddv/users/USUARIOCASSA
+DATA_DIR_REMOTE=/tallerlocal/atcanet/scp/cassa
+
+DIR_LOCAL_1=cassa
+
+USER=postal
+HOST=10.1.1.5
+
+
+echo BUSCANDO FICHEROS DE DATOS
+
+  cp -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/* $DIR_COPIA_SEG/$DIR_LOCAL_1
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/*.info
+#  find  $DATA_DIR_LOCAL/$DIR_LOCAL_1 -name "*.zip" -exec /opt/util/ftpcmd --verbose --src={} --dst=$DATA_DIR_REMOTE/$DIR_REMOTE_1/ --user=$USER --passwd=$PASS --host=$HOST \;
+  scp -Bq $DATA_DIR_LOCAL/$DIR_LOCAL_1/*.zip $USER@$HOST:$DATA_DIR_REMOTE/$DIR_LOCAL_1/
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/*
+
+popd

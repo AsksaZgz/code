@@ -1,0 +1,68 @@
+
+<html>
+
+    <head>
+	<title>Intranet AtcaNet</title>
+	<meta http-equiv="Content-Type" content="text/html; iso-8859-15" />
+    </head>
+
+    <body>
+	<table align="center">
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="emergencia">AtcaNet - Plan de Emergencias</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="/gestion/">AtcaNet - Gestión Integrada</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="/phpldapadmin/">AtcaNet - LDAP</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td align="center">
+		<table border="1" width="100%" cellpadding="5">
+		<tr><th align="center"><a href="http://toro.atcanet:8081/portalAtcanet/portalCorporativo/portal1/portal.jsp">AtcaNet - Portal Corporativo</a></th></tr>
+		</table>
+	    </td></tr>
+	    <tr><td>
+		<table>
+<tr><td valign="top"><table border="1">
+<tr><th>Wacko-Wiki (Obsoleto)</th></tr>
+		<tr><td>		<a href="wikis/guiaweb">Atcanet Estandares - Guia de Diseño Web</a>		</td></tr>		
+</table></td><td valign="top"><table border="1" cellpadding="1">
+<tr><th>Wiki-Media</th></tr>
+		<tr><td nowrap>		<a href="wikimedia/asp_mantenimiento">Servicio ASP - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/estandares">Estandares</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/gp_mantenimiento">Gema Postal - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/gv_mantenimiento">Gema Visual - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/ocv_mantenimiento">Onice CV - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/odv_mantenimiento">Onice DiscoVirtual - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/sistemas">Sistemas - Microinformática</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/style">Guia Web</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/tpc_mantenimiento">Topacio PortalCorporativo - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/twm_mantenimiento">Topacio WebMail - Mantenimiento</a>		</td></tr>		
+		<tr><td nowrap>		<a href="wikimedia/wikiuso">Normas de uso del wiki</a>		</td></tr>		
+</table></td><td valign="top"><table border="1">
+<tr><th>Documentación</th></tr>
+		<tr><td>		<a href="documentacion/metodologia">documentacion/metodologia</a>		</td></tr>		
+		<tr><td>		<a href="documentacion/micro">documentacion/micro</a>		</td></tr>		
+		<tr><td>		<a href="documentacion/productos">documentacion/productos</a>		</td></tr>		
+		<tr><td>		<a href="documentacion/servicios">documentacion/servicios</a>		</td></tr>		
+</table></td><td valign="top"><table border="1">
+<tr><th>Software</th></tr>
+		<tr><td>		<a href="bazar/java">bazar/java</a>		</td></tr>		
+		<tr><td>		<a href="bazar/licencias">bazar/licencias</a>		</td></tr>		
+		<tr><td>		<a href="bazar/linux">bazar/linux</a>		</td></tr>		
+		<tr><td>		<a href="bazar/opensource">bazar/opensource</a>		</td></tr>		
+		<tr><td>		<a href="bazar/windows">bazar/windows</a>		</td></tr>		
+</table></td></tr>
+		</table>
+	    </td></tr>
+	</table>
+    </body>
+</html>
+

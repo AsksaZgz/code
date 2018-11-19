@@ -1,0 +1,36 @@
+#!/bin/bash
+
+ficheroLog=/mnt/copiaSeguridad/log.txt
+
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+# 1.- Copiamos los usuarios
+# 	Borramos todos los core (del jbuilder o el forte)
+find /atcanet/usuarios -name core -exec rm {} \;
+
+dirs=`ls /atcanet/usuarios`
+echo $dirs
+
+for f in $dirs ;
+do
+  mkdir /mnt/copiaSeguridad/usuarios/diaria/$f
+  $csbin -i 5 -l $ficheroLog /atcanet /mnt/copiaSeguridad/usuarios/diaria/$f cs_$f_ usuarios/$f
+done 
+
+#Copia de seguridad de los buzones de correo
+files=`ls /var/mail`
+
+for f in $files ;
+do
+  mkdir -p /mnt/copiaSeguridad/mail/diaria/$f      
+  $csbin -c 5 -l $ficheroLog /var/mail /mnt/copiaSeguridad/mail/diaria/$f $f $f            
+done
+
+$csbin -c 5 -l $ficheroLog /opt/openldap /mnt/copiaSeguridad/openldap/diaria cs_openldap etc/openldap var/openldap-ldbm
+$csbin -c 5 -l $ficheroLog /opt/mysql/data /mnt/copiaSeguridad/emergencia/mysql/diaria emerg_mysql emergencia
+$csbin -c 5 -l $ficheroLog /opt/mysql/data /mnt/copiaSeguridad/proyectos/mysql/diaria proy_mysql proyectos
+$csbin -c 5 -l $ficheroLog /tallerlocal/atcanet /mnt/copiaSeguridad/emergencia/aplic/diaria emerg_aplic emergencia
+$csbin -c 5 -l $ficheroLog /tallerlocal/atcanet /mnt/copiaSeguridad/proyectos/aplic/diaria proy_aplic proyectos
+$csbin -c 5 -l $ficheroLog /opt/mysql/data /mnt/copiaSeguridad/wiki/mysql/diaria wiki_mysql wiki_gemavisual wiki_gemapostal wacko_wiki wiki_atcanetsistemas wiki_atcanetestandares
+$csbin -c 5 -l $ficheroLog /tallerlocal/atcanet /mnt/copiaSeguridad/wiki/data/diaria wiki_data wikis
+

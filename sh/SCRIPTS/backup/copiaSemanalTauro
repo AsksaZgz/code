@@ -1,0 +1,65 @@
+#!/bin/bash
+mount -a -t nfs
+csbindir=/tallerlocal/programas/SCRIPTS/backup
+csdestdir=/mnt/copiaSeguridad/backup-tauro/semanal
+ficheroLog=$csdestdir/../logSemanalTauro.log
+
+mkdir -p $csdestdir
+
+echo "-----------------------------------------------------------" > $ficheroLog
+echo "Copia semanal." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >> $ficheroLog
+
+# 1.- Copiamos los usuarios
+# 	Borramos todos los core (del jbuilder o el forte)
+find /atcanet/usuarios -name core -exec rm {} \;
+mkdir -p $csdestdir/usuarios
+
+dirs=`ls /atcanet/usuarios`
+echo "Copiamos los directorios de los usuarios ($dirs)." >> $ficheroLog
+for f in $dirs ;
+do
+  $csbindir/copiaSeguridad -i 5 -l $ficheroLog /atcanet \
+					       $csdestdir/usuarios \
+					       usuarios-home-$f- \
+					       usuarios/$f
+done
+# 2.- Copia de seguridad de los buzones de correo
+#
+files=`ls /var/mail`
+echo "Copiamos los buzones de correo de los usuarios." >>$ficheroLog
+for f in $files ;
+do
+  $csbindir/copiaSeguridad -c 5 -l $ficheroLog /var/mail \
+					       $csdestdir/usuarios \
+					       usuarios-mail-$f- \
+					       $f
+done
+
+# 3.- Copia de seguridad de las bases de datos
+#
+mkdir -p $csdestdir/datos
+#MYSQL
+$csbindir/copiaSeguridadLinks -c 5 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-pCorpATCANET- \
+					     pCorpATCANET
+
+$csbindir/copiaSeguridadLinks -c 5 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-webmail- \
+					     webmail
+
+$csbindir/mysql/mysql-backup.sh portalCorpATCANET $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh webmail $csdestdir/datos >>$ficheroLog
+
+# 4.- Copia de seguridad de las aplicaciones
+#
+mkdir -p $csdestdir/aplicaciones
+echo "Copiamos los contextos (aplicaciones)." >>$ficheroLog
+$csbindir/copiaSeguridad -i 7 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir/aplicaciones \
+					     pCorpATCANET- \
+					     pCorpATCANET
+
+

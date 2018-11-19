@@ -1,0 +1,29 @@
+#!/bin/bash
+
+seguir="si"
+
+dirapache="/opt/apache/logs"
+dirtomcat="/opt/tomcat/logs"
+
+mkdir /opt/apache/logs/old
+mkdir /opt/tomcat/logs/old
+
+numero=$1
+
+while [ $numero -ge 2 ]; do
+    mv -f $dirapache/error_log`expr $numero - 1` $dirapache/old/error_log${numero}
+    mv -f $dirapache/access_log`expr $numero - 1` $dirapache/old/access_log${numero}
+    mv -f $dirtomcat/catalina.out`expr $numero - 1` $dirtomcat/old/catalina.out${numero}
+    numero=`expr $numero - 1`
+done
+
+mv -f $dirapache/error_log $dirapache/old/error_log1
+mv -f $dirapache/access_log $dirapache/old/access_log1
+mv -f $dirtomcat/catalina.out $dirtomcat/old/catalina.out1    
+
+rm $dirapache/*
+rm $dirtomcat/*
+mv -f $dirapache/old/* $dirapache
+mv -f $dirtomcat/old/* $dirtomcat
+rmdir $dirapache/old
+rmdir $dirtomcat/old

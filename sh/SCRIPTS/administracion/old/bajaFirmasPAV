@@ -1,0 +1,29 @@
+#!/bin/bash
+
+diasmeses="31 28 31 30 31 30 31 31 30 31 30 31"
+dirFirmas=/atcanet/desarrollo/bazar/tecnico/firmasPAV
+usuario=CC1D9Y3KS6
+palabra=ngp5msse
+
+dia=`date +%d`
+mes=`date +%m`
+
+otrodia=`expr $dia - 1`
+otromes=`expr $mes - 1`
+
+diaFinal=$otrodia
+mesFinal=$mes
+
+if [ "$otrodia" == "0" ] ; then
+  mesFinal=$otromes
+  diaFinal=`echo $diasmeses | gawk -v mes="$mesFinal" '{print $(mes)}'`
+fi
+
+diaFinal=`echo $diaFinal | gawk '{printf("%02d", $0)}'`
+mesFinal=`echo $mesFinal | gawk '{printf("%02d", $0)}'`
+
+curl -o $dirFirmas/firmas.zip http://$usuario:$palabra@updates.pandasoftware.com:8003/software/basevirus/pav$mesFinal$diaFinal.zip
+unzip -oq -d $dirFirmas $dirFirmas/firmas.zip
+unzip -oq -d /usr/lib/panda $dirFirmas/firmas.zip
+rm $dirFirmas/firmas.zip
+

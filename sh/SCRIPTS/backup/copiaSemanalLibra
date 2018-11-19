@@ -1,0 +1,43 @@
+#!/bin/bash
+mount -a -t nfs
+csbindir=/tallerlocal/programas/SCRIPTS/backup
+csdestdir=/mnt/copiaSeguridad/backup-libra/semanal
+ficheroLog=$csdestdir/../logSemanalLibra.log
+
+mkdir -p $csdestdir
+
+echo "-----------------------------------------------------------" >$ficheroLog
+echo "Copia semanal." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /tallerlocal/atcanet/onicecv/datos \
+					     $csdestdir \
+					     onicecv_datos_ \
+					     cv
+
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /tallerlocal/atcanet/onicecv/data/report \
+					     $csdestdir \
+					     onicecv_logs_ \
+					     logs
+
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /tallerlocal/atcanet/webcorp-atcanet \
+					     $csdestdir \
+					     webcorp-atcanet_ \
+					     com \
+					     lib \
+					     web
+					     
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /tallerlocal/atcanet/cajafuerte \
+					     $csdestdir \
+					     cajafuerte_ \
+					     data/store
+
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /tallerlocal/atcanet/gestionBugs \
+					     $csdestdir \
+					     gestionBugs_ \
+					     bugtracker
+
+$csbindir/copiaSeguridad -c 4 -l $ficheroLog /opt/openldap \
+					     $csdestdir \
+					     openldap_ \
+					     var/openldap-ldbm

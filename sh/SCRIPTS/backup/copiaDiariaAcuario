@@ -1,0 +1,24 @@
+#!/bin/bash
+mount -a -t nfs
+csbindir=/tallerlocal/programas/SCRIPTS/backup
+csdestdir=/mnt/copiaSeguridad/backup-acuario/diaria
+ficheroLog=$csdestdir/../logDiariaAcuario.log
+
+mkdir -p $csdestdir
+
+echo "-----------------------------------------------------------" >$ficheroLog
+echo "Copia diaria." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+$csbindir/copiaSeguridad -i 7 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir \
+					     contextos-aplicaciones- \
+					     atcanet \
+					     jira \
+					     alfresco
+
+$csbindir/mysql/mysql-backup.sh atcanet_db $csdestdir >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh jira $csdestdir >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh alfresco $csdestdir >>$ficheroLog
+
+$csbindir/openldap/openldap-backup.sh $csdestdir >>$ficheroLog

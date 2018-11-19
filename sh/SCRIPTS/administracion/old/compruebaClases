@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Variables
+# - tipos     es la variable que contiene las extensiones validas de clases nuestras (com.atcan...)
+# - dirProy   es el directorio donde estan los proyectos
+
+tipos="com org es"
+dirProy=/atcanet/tallerdesoftware
+
+
+CP=.
+
+# Paquetes que se necesitan
+
+CP=$CP:/atcanet/desarrollo/bazar/apijava/jaxp.jar
+CP=$CP:/atcanet/desarrollo/bazar/apijava/parser.jar
+CP=$CP:/atcanet/desarrollo/bazar/apijava/activation.jar
+CP=$CP:/atcanet/desarrollo/bazar/apijava/mail.jar
+CP=$CP:/atcanet/desarrollo/bazar/apijava/iaik_jce_full.jar
+CP=$CP:/atcanet/desarrollo/bazar/apijava/iaik_smime.jar
+
+
+# Hace la compilacion sobre los directorios de proyectos
+
+for producto in $(ls -d $dirProy/*)
+do
+  if [ -d $producto ]; then
+    for entidad in $(ls -d $producto/*)
+    do
+      if [ -d $entidad ]; then
+        for entorno in $(ls -d $entidad/*)
+        do
+          if [ -d $entorno ]; then
+            for version in $(ls -d $entorno/*)
+            do
+              if [ -d $version ]; then
+                for tipo in $tipos
+                do
+                  dirComp=$version/$tipo
+                  if [ -d $dirComp ]; then
+                    echo --- Compilando proyecto en $dirComp 
+                    java -classpath $JAVA_PATH/lib/tools.jar:$CP:$version:/mnt/discog utiles.jcmp.JCmp $dirComp
+                  fi
+                done
+              fi
+            done
+          fi
+	      done
+      fi
+    done
+  fi
+done  
+

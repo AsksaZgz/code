@@ -1,0 +1,24 @@
+#!/bin/bash
+
+pushd .
+
+dir_org_tomcat=/opt/tomcat/logs
+dir_dst_tomcat=/home/updates/logs/tomcat
+
+dir_org_portal=/tallerlocal/atcanet/pCorpATCANET/data/logs
+dir_dst_portal=/home/updates/logs/portal
+
+dir_org_ghoras=/tallerlocal/atcanet/gestionHoras/data/logs
+dir_dst_ghoras=/home/updates/logs/ghoras
+
+    cp $dir_org_tomcat/catalina.out $dir_org_tomcat/apache* $dir_dst_tomcat
+    
+    cp $dir_org_portal/*.log $dir_org_portal/*.xml $dir_dst_portal
+    
+    cp $dir_org_ghoras/*.log $dir_dst_ghoras
+    
+    cd /home/updates/
+    
+    chmod -R 777 logs
+        
+popd    

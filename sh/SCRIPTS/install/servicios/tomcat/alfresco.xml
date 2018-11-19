@@ -1,0 +1,5 @@
+<Context path="/alfresco" docBase="/tallerlocal/atcanet/alfresco/alfresco.war" swallowOutput="true">
+  <Logger className="org.apache.catalina.logger.FileLogger"
+          prefix="localhost_alfresco_log." suffix=".txt"
+          timestamp="true"/>
+</Context>

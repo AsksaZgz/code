@@ -1,0 +1,146 @@
+
+Alias /wikis/ "/tallerlocal/atcanet/wikis/"
+
+<Directory "/tallerlocal/atcanet/wikis">
+  Options Indexes FollowSymLinks MultiViews IncludesNoExec
+  AddOutputFilter Includes html
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+Alias /segsalud/ "/tallerlocal/atcanet/emergencia/"
+
+<Directory "/tallerlocal/atcanet/emergencia">
+  Options Indexes FollowSymLinks MultiViews IncludesNoExec
+  AddOutputFilter Includes html
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+Alias /proyectos/ "/tallerlocal/atcanet/proyectos/"
+
+<Directory "/tallerlocal/atcanet/proyectos">
+  Options Indexes FollowSymLinks MultiViews IncludesNoExec
+  AddOutputFilter Includes html
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+
+#wikiMedia
+#********************************************************************************
+
+Alias /wiki_sistemas/ "/tallerlocal/atcanet/wikimedia/sistemas/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/sistemas">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_estandares/ "/tallerlocal/atcanet/wikimedia/estandares/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/estandares">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_mantenimiento/ "/tallerlocal/atcanet/wikimedia/mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_wikiuso/ "/tallerlocal/atcanet/wikimedia/wikiuso/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/wikiuso">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_guiaweb/ "/tallerlocal/atcanet/wikimedia/guiaweb/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/guiaweb">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_gv_mantenimiento/ "/tallerlocal/atcanet/wikimedia/gv_mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/gv_mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_tp_mantenimiento/ "/tallerlocal/atcanet/wikimedia/tp_mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/tp_mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_tpc_mantenimiento/ "/tallerlocal/atcanet/wikimedia/tpc_mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/tpc_mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_tw_mantenimiento/ "/tallerlocal/atcanet/wikimedia/tw_mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/tw_mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wiki_sasp_mantenimiento/ "/tallerlocal/atcanet/wikimedia/sasp_mantenimiento/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/sasp_mantenimiento">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /wikiMedia/ "/tallerlocal/atcanet/wikimedia/"
+
+<Directory "/tallerlocal/atcanet/wikimedia/wikiMedia">
+    Options Indexes FollowSymLinks MultiViews IncludesNoExec
+    AddOutputFilter Includes html
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+#Fin wikiMedia

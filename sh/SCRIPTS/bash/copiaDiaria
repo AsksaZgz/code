@@ -1,0 +1,16 @@
+#!/bin/bash
+mount -a -t nfs
+ficheroLog=/mnt/copiaSeguridad/log.txt
+
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia diaria." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+
+
+$csbin -i 5 -l $ficheroLog /tallerlocal/mysqldata  /mnt/copiaSeguridad/mysql/diaria  cs_mysql_tauro  portalCorpATCANET webmail
+

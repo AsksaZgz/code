@@ -1,0 +1,13 @@
+#!/bin/bash
+mount -a -t nfs
+ficheroLog=/mnt/copiaSeguridad/diarialog.txt
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia diaria." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+
+$csbin -i 7 -l $ficheroLog /tallerlocal/atcanet/postal /mnt/copiaSeguridad/postal-auna/diaria cs_postal_auna data/statistic/AUNA data/report/logs/postalEst* data/cnf cnf

@@ -1,0 +1,97 @@
+#!/bin/bash
+mount -a -t nfs
+csbindir=/tallerlocal/programas/SCRIPTS/backup
+csdestdir=/mnt/copiaSeguridad/backup-toro/mensual
+ficheroLog=$csdestdir/../logMensualToro.log
+
+mkdir -p $csdestdir
+
+echo "-----------------------------------------------------------" >$ficheroLog
+echo "Copia mensual." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+# Usuarios
+mkdir -p $csdestdir/usuarios
+# Borramos todos los core
+find /atcanet/usuarios -name core -exec rm {} \;
+# HOMES de los usuarios
+echo "Copiamos los directorios de los usuarios." >>$ficheroLog
+for f in `ls /atcanet/usuarios`; do
+  $csbindir/copiaSeguridad -i 6 -l $ficheroLog /atcanet \
+					       $csdestdir/usuarios \
+					       usuarios-home-$f- \
+					       usuarios/$f/documentos \
+					       usuarios/$f/bin
+done
+# Buzones de correo de los usuarios
+echo "Copiamos los buzones de correo." >>$ficheroLog
+for f in `ls /var/mail`; do
+  $csbindir/copiaSeguridad -c 6 -l $ficheroLog /var/mail \
+					       $csdestdir/usuarios \
+					       usuarios-mail-$f- \
+					       $f
+done
+
+# Aplicaciones
+echo "Copiamos los contextos (aplicaciones)." >>$ficheroLog
+mkdir -p $csdestdir/aplicaciones
+$csbindir/copiaSeguridad -i 6 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir/aplicaciones \
+					     emergencia- \
+					     emergencia
+
+$csbindir/copiaSeguridad -i 6 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir/aplicaciones \
+					     gestion- \
+					     gestion
+
+$csbindir/copiaSeguridad -i 6 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir/aplicaciones \
+					     wikis- \
+					     wikimedia \
+					     wikis
+
+$csbindir/copiaSeguridad -i 6 -l $ficheroLog /tallerlocal/atcanet \
+					     $csdestdir/aplicaciones \
+					     portal-atcanet- \
+					     pCorpATCANET
+
+# Datos
+echo "Copiamos los datos (bases de datos)." >>$ficheroLog
+mkdir -p $csdestdir/datos
+#MYSQL
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-emergencia- \
+					     emergencia
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-gestion- \
+					     gestion
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-dms- \
+					     dms
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-wikimedia- \
+					     wikimedia
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-wikiwacko- \
+					     wikiwacko
+$csbindir/copiaSeguridadLinks -c 6 -l $ficheroLog /opt/mysql/data \
+					     $csdestdir/datos \
+					     backup-mysql-portalCorpATCANET- \
+					     portalCorpATCANET
+
+$csbindir/mysql/mysql-backup.sh emergencia $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh gestion $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh dms $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh wikimedia $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh wikiwacko $csdestdir/datos >>$ficheroLog
+$csbindir/mysql/mysql-backup.sh portalCorpATCANET $csdestdir/datos >>$ficheroLog
+#OPENLDAP
+$csbindir/openldap/openldap-backup.sh $csdestdir/datos >>$ficheroLog
+#SUBVERSION
+$csbindir/subversion/svn-backup.sh /atcanet/repositorio $csdestdir/datos >>$ficheroLog

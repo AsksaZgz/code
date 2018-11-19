@@ -1,0 +1,13 @@
+#!/bin/bash
+ficheroLog=/mnt/copiaSeguridad/mensuallogEscorpio.txt
+
+mount -a -t nfs
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia mensual." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+
+/atcanet/desarrollo/scripts/bash/copiaSeguridad -i 3 -l $ficheroLog /tallerlocal/atcanet/postal /mnt/copiaSeguridad/postal-auna/mensual cs_postal_auna data/statistic/AUNA data/report/logs/postalEst* data/cnf cnf

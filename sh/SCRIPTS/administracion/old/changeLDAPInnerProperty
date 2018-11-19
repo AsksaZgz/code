@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$#" == 3 ] ; then
+  /opt/jdk/bin/java -cp /atcanet/desarrollo/scripts/bash/ldap ChangeLDAPInnerProperty $1 $2 $3
+else
+  echo "uso    : changeLDAPInnerProperty <base>  <propiedad>  <valor>"
+  echo "ejemplo: changeLDAPInnerProperty \"cn=webMail,cn=mfulano,ou=users,dc=atcanet,dc=com\"  apassword  atcanet"
+fi

@@ -1,0 +1,132 @@
+#!/bin/bash
+
+file_log=/tallerlocal/sys/cron/aplsTauro.log
+
+echo ARRANCANDO APLSTAURO >$file_log
+pushd .
+
+echo LOG... >>$file_log
+exec >> $file_log
+exec 2>> $file_log
+
+dir_updates=/tallerlocal/updates/atcanet
+dir_apls=/tallerlocal/atcanet
+dir_cs=/tallerlocal/sys/csAplsProd
+dir_over=/tallerlocal/sys/overApls
+
+if [ "$1" = "stop" -o "$1" = "" ]; then
+        echo DETENIENDO SERVIDORES
+        /sbin/apacheTomcat stop
+	sleep 3s
+        echo APACHE-TOMCAT DETENIDO  	
+        kill -INT `cat /opt/openldap/var/slapd.pid`
+	sleep 3s
+	echo OPENLDAP DETENIDO
+	sleep 3s
+
+        diasem=`date +%w`
+        if [ $diasem -gt 0 ]; then
+            if [ $diasem -le 5 ]; then
+#        	echo BUSCANDO NUEVAS ACTUALIZACIONES
+#	        sleep 3s		
+#        	cd $dir_apls
+#        	dirs=`find * -type d`
+#        	for f in $dirs ;
+#         	do
+#                    echo BUSCANDO DIRECTORIO $f
+#		    filetar=
+#                    
+#		    if   [ -s $dir_updates/$f.tgz ]; then filetar=$f.tgz
+#                    elif [ -s $dir_updates/$f.tar.gz ]; then filetar=$f.tar.gz
+#                    fi
+#                     
+#		    if [ "$filetar" != "" ]; then
+#		        echo EXISTE NUEVA ACTUALIZACION EN: $dir_updates/$filetar
+#		        cd $dir_updates
+#			if [ -d $f ]; then
+#			    echo BORRANDO ANTIGUA ACTUALIZACION DE: $dir_updates/$f
+#			    rm -rf $f 
+#			fi
+#			tar zxvf $filetar
+#			rm $filetar
+#			cd $dir_apls	    
+#                        
+#                        # Borramos el work solamente al actualizar de tar.gz
+#                        rm -R /opt/tomcat/work/*
+#		    fi
+#                    if [ -s $dir_updates/$f/scripts/prodDB ]; then
+#			echo EJECUTANDO SCRIPT DE BASES DE DATOS
+#                       /opt/mysql/bin/mysql -e "source $dir_updates/$f/scripts/prodDB"
+#                       mv -f $dir_updates/$f/scripts/prodDB $dir_updates/$f/scripts/prodDB_old
+#        	    fi
+#        	done		
+                sleep 3s
+                echo REALIZANDO COPIAS DE SEGURIDAD DE LAS APLICACIONES A ACTUALIZAR
+                cd $dir_updates
+                dirs=`find * -type d`
+                for f in $dirs ;
+                do			
+        	    cd $dir_apls	
+                    echo COPIA DE $dir_apls/$f SOBRE $dir_cs/$f.tar.gz
+                    tar zvcf $dir_cs/$f.tar.gz $f/com $f/cnf $f/web $f/jsp $f/data/lang
+        	    cd $dir_updates
+        	done
+        	echo FIN DE LAS COPIAS DE SEGURIDAD
+    	    fi
+        fi
+        									
+	sleep 3s	
+        cd /opt/mysql
+        ./bin/mysqladmin shutdown
+        echo MYSQL DETENIDO					
+
+echo copia seguridad GPROY 
+tar -zcvf /opt/mysql/copiaSegGPROY/tablasGPROYdiaria$diasem.tgz  /opt/mysql/data/portalCorpATCANET/GPROY_*
+        
+#        if [ $diasem -gt 0 ]; then
+#            if [ $diasem -le 5 ]; then		
+#            	echo REALIZANDO LA ACTUALIZACION
+#            	sleep 3s	  	
+#            	cp -Ru $dir_updates/* $dir_apls/
+#		cp -Ru $dir_over/atcanet/* $dir_apls/
+#                find $dir_apls -not -user serweb -not -group serweb -exec chown serweb:serweb {} \;
+#                find $dir_apls -perm +007 -exec chmod 770 {} \;
+#            fi
+#        fi
+	
+	
+	
+fi
+	
+    echo ROTANDO LOGS DEL APACHE-TOMCAT
+    sleep 3s
+    /sbin/rotalogapache 5
+    
+    echo EJECUTANDO SCRIPT EXTENDIDO DE APLSTAURO
+    dascript=/tallerlocal/sys/scripts/despuesActualizacionApls
+    $dascript
+    chmod a-x $dascript
+    
+    if [ "$1" = "start" -o "$1" = "" ]; then
+        echo ARRANCANDO SERVIDORES
+	
+        sleep 3s
+        cd /opt/mysql
+        ./bin/safe_mysqld &
+        sleep 3s
+	echo MYSQL INICIADO
+	
+        /opt/openldap/libexec/slapd &
+        sleep 3s
+	echo OPENLDAP INICIADO
+	
+        /sbin/apacheTomcat start
+        sleep 3s
+	echo APACHE-TOMCAT INICIADO
+    fi
+    
+echo ANTES DEL POPD
+
+popd
+
+echo FIN DEL APLSTAURO

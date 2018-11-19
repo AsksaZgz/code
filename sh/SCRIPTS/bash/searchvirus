@@ -1,0 +1,108 @@
+#!/bin/bash
+
+path_informe=/tallerlocal/sys/cron/informe_vir.log
+maquina=`uname -n`
+fecha=`date`
+
+if [ "$1" != "" ]; then
+    
+  echo $fecha -- $maquina >$path_informe
+  echo ARRANCANDO SEARCHVIRUS >>$path_informe
+
+
+  echo BORRANDO FICHERO DE LOGS ANTIGUO >>$path_informe
+  rm -f /var/log/panda/pavcl.log
+
+  echo COPIANDO FICHERO DE FIRMAS ACTUALIZADO >>$path_informe
+  cp /atcanet/desarrollo/bazar/tecnico/firmasPAV/PAV.SIG /usr/lib/panda/pav.sig
+
+  echo INICIO DEL ANALISIS >>$path_informe
+
+  /usr/bin/pavcl $1 -ren -cmp -nso -esp -aut
+  rc=$?
+
+  echo RETURN CODE $rc >>$path_informe
+
+  let "rc_low = $rc & 15"
+  let "rc_high = $rc & 240"
+  let "num_vir = $rc >> 8"
+
+  echo NUMERO DE VIRUS $num_vir >>$path_informe
+
+  if [ $rc_low = "0" ]; then
+    msj1="Ha terminado el analisis."
+  elif [ $rc_low = "1" ]; then
+    msj1="Error: $rc_low. Problemas de memoria."
+  elif [ $rc_low = "2" ]; then
+    msj1="Error: $rc_low. Parmetros incorrectos."
+  elif [ $rc_low = "3" ]; then
+    msj1="Error: $rc_low. Proceso abortado por el usuario."
+  elif [ $rc_low = "4" ]; then
+    msj1="Error: $rc_low. Falta el fichero de firmas PAV.SIG"
+  elif [ $rc_low = "5" ]; then
+    msj1="Error: $rc_low. Error al Cargar el fichero de firmas PAV.SIG"
+  elif [ $rc_low = "6" ]; then
+    msj1="Error: $rc_low. Falta el fichero PAVCL.MSG"
+  elif [ $rc_low = "7" ]; then
+    msj1="Error: $rc_low. Falta el fichero PANDA.CHP"
+  elif [ $rc_low = "8" ]; then
+    msj1="Error: $rc_low. Falta el fichero GLOBAL.MSG"
+  elif [ $rc_low = "9" ]; then
+    msj1="Error: $rc_low. Falta de permisos para realizar la operacion."
+  elif [ $rc_low = "10" ]; then
+    msj1="Error: $rc_low. Error de reasignacion de la senal SIGINT"
+  elif [ $rc_low = "11" ]; then
+    msj1="Error: $rc_low. Error al realizar llamada a alguna funcion de kernel de Linux"
+  elif [ $rc_low = "12" ]; then
+    msj1="Error: $rc_low. Si PAVCL se lanza con parmetro -HELP"
+  fi
+
+echo RESULTADO DEL ANALISIS: $msj1 >>$path_informe
+
+  if [ $rc_high = "0" ]; then
+    msj2="Operaciones: No se ha encontrado virus \n "
+  elif [ $rc_high = "16" ]; then
+    msj2="Operaciones: \n Se encontraron ficheros infectados"
+  elif [ $rc_high = "32" ]; then
+    msj2="Operaciones: \n Se desinfecto algun fichero durante la ejecucion"
+  elif [ $rc_high = "48" ]; then
+    msj2="Operaciones: \n Se encontraron ficheros infectados \n Se desinfecto algun fichero durante la ejecucion"
+  elif [ $rc_high = "64" ]; then
+    msj2="Operaciones: \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "80" ]; then
+    msj2="Operaciones: \n Se encontraron ficheros infectados \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "96" ]; then
+    msj2="Operaciones: \n Se desinfecto algun fichero durante la ejecucion \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "112" ]; then
+    msj2="Operaciones: \n Se encontraron ficheros infectados \n Se desinfecto algun fichero durante la ejecucion \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "128" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion "
+  elif [ $rc_high = "144" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se encontraron ficheros infectados"
+  elif [ $rc_high = "160" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se desinfecto algun fichero durante la ejecucion"
+  elif [ $rc_high = "176" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se encontraron ficheros infectados \n Se desinfecto algun fichero durante la ejecucion"
+  elif [ $rc_high = "192" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "208" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se encontraron ficheros infectados \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "224" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se desinfecto algun fichero durante la ejecucion \n Se renombro algun fichero durante la ejecucion"
+  elif [ $rc_high = "240" ]; then
+    msj2="Operaciones: \n Se borro algun fichero durante la ejecucion \n Se encontraron ficheros infectados \n Se desinfecto algun fichero durante la ejecucion \n Se renombro algun fichero durante la ejecucion"      
+  fi
+
+  echo $msj2 >>$path_informe
+
+  if [ $rc_high != "0" ]; then
+    echo FICHERO LOGS >>$path_informe
+    cat /var/log/panda/pavcl.log >>$path_informe 
+    cat $path_informe | mail -s "INFORME DE VIRUS" administradores@atcanet.com
+  fi
+
+else
+  echo "uso: searchVirus <directorio>"
+fi
+
+  

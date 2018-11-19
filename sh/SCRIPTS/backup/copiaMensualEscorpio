@@ -1,0 +1,28 @@
+#!/bin/bash
+mount -a -t nfs
+csbindir=/tallerlocal/programas/SCRIPTS/backup
+csdestdir=/mnt/copiaSeguridad/backup-escorpio/mensual
+ficheroLog=$csdestdir/../logMensualEscorpio.log
+
+mkdir -p $csdestdir
+
+echo "-----------------------------------------------------------" >$ficheroLog
+echo "Copia mensual." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+$csbindir/copiaSeguridad -c 6 -l $ficheroLog /tallerlocal/atcanet/postalasp \
+					    $csdestdir \
+					    postalasp_ \
+					    cnf \
+					    data/cnf \
+					    data/report \
+					    data/estadisticas \
+					    data/output/duplicate/send
+
+$csbindir/copiaSeguridad -c 6 -l $ficheroLog / \
+					    $csdestdir \
+					    escorpio_ \
+					    etc/mail \
+					    var/mail \
+					    var/spool
+

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+file_log=/tallerlocal/sys/cron/scpDatosAuna.log
+
+echo ARRANCANDO SCPDATOSAUNA >>$file_log
+pushd .
+
+echo LOG... >>$file_log
+exec >> $file_log
+exec 2>> $file_log
+date
+
+DIR_COPIA_SEG=/tallerlocal/sys/csAplsProd/postal_discovirtual/auna
+
+DATA_DIR_LOCAL=/tallerlocal/atcanet/cajafuerte/users/ddv/users/auna/automatico
+DATA_DIR_REMOTE=/tallerlocal/atcanet/scp/auna
+
+DIR_LOCAL_1=publicidad
+DIR_LOCAL_2=duplicados
+DIR_LOCAL_3=facturas
+DIR_LOCAL_4=pruebas
+
+USER=postal
+HOST=10.1.1.5
+
+echo BUSCANDO FICHEROS DE DATOS
+
+  mkdir -p $DIR_COPIA_SEG/$DIR_LOCAL_1
+  cp -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/* $DIR_COPIA_SEG/$DIR_LOCAL_1
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/*.info
+#  find  $DATA_DIR_LOCAL/$DIR_LOCAL_1 -name "*.zip" -exec /opt/util/ftpcmd --verbose --src={} --dst=$DATA_DIR_REMOTE/$DIR_LOCAL_1/ --user=$USER --passwd=$PASS --host=$HOST \;
+  scp -Bq $DATA_DIR_LOCAL/$DIR_LOCAL_1/*.zip $USER@$HOST:$DATA_DIR_REMOTE/$DIR_LOCAL_1/
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_1/*
+
+  mkdir -p $DIR_COPIA_SEG/$DIR_LOCAL_2
+  cp -f $DATA_DIR_LOCAL/$DIR_LOCAL_2/* $DIR_COPIA_SEG/$DIR_LOCAL_2
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_2/*.info
+#  find  $DATA_DIR_LOCAL/$DIR_LOCAL_2 -name "*.zip" -exec /opt/util/ftpcmd --verbose --src={} --dst=$DATA_DIR_REMOTE/$DIR_LOCAL_2/ --user=$USER --passwd=$PASS --host=$HOST \;
+  scp -Bq $DATA_DIR_LOCAL/$DIR_LOCAL_2/*.zip $USER@$HOST:$DATA_DIR_REMOTE/$DIR_LOCAL_2/
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_2/*
+
+  mkdir -p $DIR_COPIA_SEG/$DIR_LOCAL_3
+  cp -f $DATA_DIR_LOCAL/$DIR_LOCAL_3/* $DIR_COPIA_SEG/$DIR_LOCAL_3
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_3/*.info
+#  find  $DATA_DIR_LOCAL/$DIR_LOCAL_3 -name "*.zip" -exec /opt/util/ftpcmd --verbose --src={} --dst=$DATA_DIR_REMOTE/$DIR_LOCAL_3/ --user=$USER --passwd=$PASS --host=$HOST \;
+  scp -Bq $DATA_DIR_LOCAL/$DIR_LOCAL_3/*.zip $USER@$HOST:$DATA_DIR_REMOTE/$DIR_LOCAL_3/
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_3/*
+
+  mkdir -p $DIR_COPIA_SEG/$DIR_LOCAL_4
+  cp -f $DATA_DIR_LOCAL/$DIR_LOCAL_4/* $DIR_COPIA_SEG/$DIR_LOCAL_4
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_4/*.info
+#  find  $DATA_DIR_LOCAL/$DIR_LOCAL_4 -name "*.zip" -exec /opt/util/ftpcmd --verbose --src={} --dst=$DATA_DIR_REMOTE/$DIR_LOCAL_4/ --user=$USER --passwd=$PASS --host=$HOST \;
+  scp -Bq $DATA_DIR_LOCAL/$DIR_LOCAL_4/*.zip $USER@$HOST:$DATA_DIR_REMOTE/$DIR_LOCAL_4/
+  rm -f $DATA_DIR_LOCAL/$DIR_LOCAL_4/*
+
+popd

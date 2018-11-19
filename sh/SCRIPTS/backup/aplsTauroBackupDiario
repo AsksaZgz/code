@@ -1,0 +1,84 @@
+#!/bin/bash
+
+file_log=/mnt/copiaSeguridad/backup-tauro/log/diario.log
+
+echo ARRANCANDO APLSTAURO >$file_log
+pushd .
+
+echo LOG... >>$file_log
+
+# Manda la salida al log
+exec >> $file_log
+exec 2>> $file_log
+
+#	dir_updates=/tallerlocal/updates/atcanet
+dir_data=/tallerlocal/datos
+dir_bakcup=/mnt/copiaSeguridad/bakcup-tauro/diaria
+dir_mysql=/opt/mysql/data
+#	dir_cs=/tallerlocal/sys/csAplsProd
+#	dir_over=/tallerlocal/sys/overApls
+
+if [ "$1" = "stop" -o "$1" = "" ]; then
+      echo DETENIENDO SERVIDORES
+      /sbin/apacheTomcat stop
+	sleep 3s
+      echo APACHE-TOMCAT DETENIDO  	
+#        kill -INT `cat /opt/openldap/var/slapd.pid`
+      service anet-openldap stop
+	sleep 3s
+	echo OPENLDAP DETENIDO
+	sleep 3s
+
+      service anet-mysql stop
+	sleep 3s
+	echo MYSQL DETENIDO
+	sleep 3s
+      
+	diasem=`date +%w`
+	# COPIA DE SEGURIDAD DE LUNES A VIERNES
+	# -gt  mayor que
+	# -le	 menor o igual que
+      if [ $diasem -gt 0 ]; then
+      	if [ $diasem -le 5 ]; then
+            	echo REALIZANDO COPIAS DE LOS DATOS
+                  tar zvcf $dir_bakcup/BackupDiarioTauro$diasem.tar.gz $dir_data/*
+			echo REALIZANDO COPIA BASES DE DATOS
+			tar zvcf $dir_bakcup/BackupDiarioTauroBdMysql$diasem.tar.gz $dir_mysql/mysql/*
+			tar zvcf $dir_bakcup/BackupDiarioTauroBdPortal$diasem.tar.gz $dir_mysql/portalCorpAtcanet/*
+			tar zvcf $dir_bakcup/BackupDiarioTauroBdWebmail$diasem.tar.gz $dir_mysql/webmail/*
+
+        	    	
+    	    fi
+        fi
+        									
+	sleep 3s	
+	
+fi
+	
+    echo ROTANDO LOGS DEL APACHE-TOMCAT
+    sleep 3s
+    /sbin/rotalogapache 5
+    sleep 3s
+
+    
+    if [ "$1" = "start" -o "$1" = "" ]; then
+        echo ARRANCANDO SERVIDORES
+	service anet-mysql stop
+      sleep 3s
+      sleep 3s
+	echo MYSQL INICIADO
+
+	service anet-openldap stop
+	sleep 3s
+	echo OPENLDAP INICIADO
+	
+      /sbin/apacheTomcat start
+       sleep 3s
+	echo APACHE-TOMCAT INICIADO
+    fi
+    
+echo ANTES DEL POPD
+
+popd
+
+echo FIN DEL APLSTAURO

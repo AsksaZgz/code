@@ -1,0 +1,8 @@
+<VirtualHost *>
+    ServerName 192.168.2.21:80
+    DocumentRoot /tallerlocal/atcanet/
+    WebAppConnection connectionName_1 warp localhost:8008
+    WebAppDeploy jira connectionName_1 /jira
+    WebAppInfo /webapp-info
+    WebAppDeploy pCorpATCANET/web connectionName_1 /portalAtcanet                                                         
+</VirtualHost>

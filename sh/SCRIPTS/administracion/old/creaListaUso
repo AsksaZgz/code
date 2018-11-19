@@ -1,0 +1,11 @@
+if [ "$1" != "" ] ; then
+  
+  du -ka $1 >listaUso.tmp
+  cat listaUso.tmp | sort -g > listaUso
+  rm listaUso.tmp
+
+else
+  
+  echo "creaListaUso <directorio>"
+
+fi

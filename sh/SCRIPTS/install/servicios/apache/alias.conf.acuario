@@ -1,0 +1,48 @@
+
+###########################################################
+# Contextos WEB de Apache (PHP)
+###########################################################
+
+# Nuevo entorno de MAMBO
+Alias /joomla/ "/tallerlocal/atcanet/joomla/"
+<Directory "/tallerlocal/atcanet/joomla">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+# Prueba Php
+Alias /pruebaphp/ "/tallerlocal/atcanet/prueba/php/"
+<Directory "tallerlocal/atcanet/prueba/php">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+###########################################################
+# Contextos JSP de conexion con Tomcat
+###########################################################
+
+# Aplicacion de incidencias
+Alias /jira/ "/tallerlocal/atcanet/jira/"
+<Directory "/tallerlocal/atcanet/jira">
+</Directory>
+JkMount /jira ajp13
+JkMount /jira/* ajp13
+
+# Entorno demo de ALFRESCO
+Alias /alfresco/ "/tallerlocal/atcanet/alfresco/"
+<Directory "/tallerlocal/atcanet/alfresco">
+</Directory>
+JkMount /alfresco ajp13
+JkMount /alfresco/* ajp13
+
+# Prueba Jsp
+Alias /pruebajsp/ "tallerlocal/atcanet/prueba/jsp/"
+<Directory "tallerlocal/atcanet/prueba/jsp">
+</Directory>
+JkMount /pruebajsp ajp13
+JkMount /pruebajsp/* ajp13
+

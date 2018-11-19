@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$1" == "" ] ; then
+  echo "usage:  systemQuery  <query_name> [parameters]"
+  echo ""
+  echo "possible query_names are:"
+  echo "         emails     Email list from atcanet's webmail addressbook" 
+elif [ "$1" == "emails" ] ; then
+  /opt/mysql/bin/mysql -e "use webmail; select name,email from contact where idbook=1;"
+fi
+

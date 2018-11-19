@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo Usuario
+echo `whoami`
+echo
+
+echo "Antigua palabra de paso"
+read -s oldPassword
+echo
+
+echo "Nueva palabra de paso"
+read -s newPassword
+echo
+
+echo "Confirme nueva palabra de paso"
+read -s confPassword
+echo
+
+if [ "$oldPassword" == "" ]  ||  [ "$oldPassword" == "" ]  ; then
+#if [ "$oldPassword" == ""  ||  "$newPassword" == ""  ||  "$confPassword" == ""] ; then
+  echo No se ha realizado cambios
+elif [ "$newPassword" != "$confPassword" ] ; then
+  echo No coinciden las palabras de paso.
+else
+  rexec -l `whoami` -p "$oldPassword" tauro.atcanet "(sleep 1s; echo $oldPassword) | sudo /atcanet/desarrollo/scripts/bash/changeAllPasswords $newPassword"
+fi

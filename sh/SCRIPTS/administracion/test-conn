@@ -1,0 +1,5 @@
+# Copy this file to /etc/cron.d
+
+# run network connection test every 3 minutes
+*/3 * * * * root /root/bin/test-conn.sh www.yahoo.es
+

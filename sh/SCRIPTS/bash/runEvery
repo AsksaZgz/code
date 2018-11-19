@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$#" -ge "2" ] ; then
+  sleepTime=$1
+  shift
+  while [ "1" ]
+  do
+    bash -c "$*"
+    sleep $sleepTime
+  done
+else
+  echo "usage:  runEvery <time> <command>"
+  echo "        time     has the same format as sleep"
+  echo "example:"
+  echo "        runEvery  10s  \"clear; mailq; \""
+  echo "          Ejecuta el comando mailq indefinidamente cada 10 segundos"
+  echo "          despues de limpiar la pantalla"
+fi

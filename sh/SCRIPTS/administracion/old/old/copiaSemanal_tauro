@@ -1,0 +1,59 @@
+#!/bin/bash
+ficheroLog=/mnt/copiaSeguridad/log.txt
+
+csbin=/atcanet/desarrollo/scripts/bash/copiaSeguridad
+
+rm $ficheroLog
+
+echo "-----------------------------------------------------------" >>$ficheroLog
+echo "Copia semanal." `date` >>$ficheroLog
+echo "-----------------------------------------------------------" >>$ficheroLog
+
+dirs=`ls /atcanet/usuarios`
+echo $dirs
+
+# No se hace mas que copia diaria y mensual
+#for f in $dirs ;
+#do
+#  mkdir /mnt/copiaSeguridad/usuarios/semanal/$f
+#  $csbin -i 4 -l $ficheroLog //atcanet /mnt/copiaSeguridad/usuarios/semanal/$f cs_$f_ usuarios/$f
+#done
+
+#Copia de seguridad de los buzones de correo
+files=`ls /var/mail`
+for f in $files ;
+do
+   mkdir -p /mnt/copiaSeguridad/mail/semanal/$f      
+   $csbin -c 4 -l $ficheroLog /var/mail /mnt/copiaSeguridad/mail/semanal/$f $f $f           
+done
+            
+
+$csbin -i 4 -l $ficheroLog /atcanet /mnt/copiaSeguridad/tallerdesoftware/semanal tallerdesoftware tallerdesoftware/CVSREPOSITORY tallerdesoftware/tools
+
+$csbin -i 4 -l $ficheroLog /atcanet /mnt/copiaSeguridad/desarrollo/semanal desarrollo desarrollo/scripts desarrollo/bazar/tecnico desarrollo/programasEnRed/util "desarrollo/programasEnRed/SalesNotes Server"
+
+$csbin -i 4 -X /atcanet/documentacion/csexcluye.txt -l $ficheroLog /atcanet /mnt/copiaSeguridad/documentacion/semanal documentacion documentacion
+
+$csbin -i 4 -l $ficheroLog /atcanet /mnt/copiaSeguridad/procedimientos/semanal procedimientos procedimientos
+
+$csbin -c 4 -l $ficheroLog /tallerlocal/sys/notes /mnt/copiaSeguridad/notes/semanal notes lotus/notesdata/*.cnf lotus/notesdata/*.ini lotus/replicas
+
+$csbin -i 4 -l $ficheroLog / /mnt/copiaSeguridad/tauro/semanal etc etc
+
+$csbin -i 4 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data /mnt/copiaSeguridad/portal-atcanet/semanal/data cs_datosportal store TablonNoticias webMail/store
+
+$csbin -c 4 -l $ficheroLog /tallerlocal/atcanet/gestionHoras/data/store /mnt/copiaSeguridad/gestionHoras/semanal cs_gestionHoras gestionHoras
+
+$csbin -c 4 -l $ficheroLog /opt/openldap /mnt/copiaSeguridad/openldap/semanal cs_openldap etc/openldap var/openldap-ldbm
+
+$csbin -i 4 -l $ficheroLog /opt/mysql/data  /mnt/copiaSeguridad/myqsl/semanal  cs_mysql_tauro  portalCorpATCANET
+
+dirs=`ls /tallerlocal/atcanet/pCorpATCANET/data/webMail/users`
+for i in $dirs ;
+do
+  mkdir /mnt/copiaSeguridad/portal-atcanet/semanal/webmailusers/$i
+  $csbin -i 4 -l $ficheroLog /tallerlocal/atcanet/pCorpATCANET/data/webMail/users     \
+                                                                      /mnt/copiaSeguridad/portal-atcanet/semanal/webmailusers/$i \
+                                                                      cs_$i                                                      \
+                                                                      $i
+done

@@ -1,0 +1,35 @@
+dirlocal=/tallerlocal/atcanet/postal/
+dirCopia=/mnt/copiaSeguridad/programa/postal
+
+echo Directorio local $dirlocal
+echo Directorio copia $dirCopia
+
+dirPostalCopia=$dirCopia/postal/
+
+mkdir $dirCopia
+mkdir $dirPostalCopia
+
+cp -r $dirlocal/cnf $dirPostalCopia
+cp -r $dirlocal/atcanet $dirPostalCopia
+cp -r $dirlocal/apijavapostal $dirPostalCopia
+mkdir $dirPostalCopia/data/
+mkdir $dirPostalCopia/data/cnf/
+mkdir $dirPostalCopia/data/report/
+mkdir $dirPostalCopia/data/report/logs
+mkdir $dirPostalCopia/data/report/error
+mkdir $dirPostalCopia/data/report/error/preprocesado
+mkdir $dirPostalCopia/data/report/error/procesado
+mkdir $dirPostalCopia/data/report/error/pruebas
+mkdir $dirPostalCopia/data/report/error/revision
+cp -r $dirlocal/data/cnf/notice $dirPostalCopia/data/cnf/
+cp -r $dirlocal/data/cnf/read $dirPostalCopia/data/cnf/
+cp -r $dirlocal/data/cnf/people $dirPostalCopia/data/cnf/
+cp -r $dirlocal/data/cnf/attach $dirPostalCopia/data/cnf/
+cp -r $dirlocal/data/cnf/indices $dirPostalCopia/data/cnf/
+mkdir $dirPostalCopia/data/cnf/template
+cp -r $dirlocal/data/cnf/template/html $dirPostalCopia/data/cnf/template
+cp -r $dirlocal/data/cnf/template/image $dirPostalCopia/data/cnf/template
+
+
+
+

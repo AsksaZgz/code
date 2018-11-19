@@ -1,0 +1,204 @@
+#!/bin/bash
+
+if [ $# -lt 4 ]; then
+    echo "Uso: $0 [opciones] dir_origen dir_destino nom_fichero lista_ficheros"
+    echo "     donde opciones:"
+    echo "	 -c n		copia ciclica con n versiones. la mas reciente es siempre la 1"
+    echo "	 -e  		se hace una simple copia de lista_ficheros en dir_destino"
+    echo "       -X fic_excl    excluye la lista de ficheros que se le indica"
+    echo "	 -l fic_log	se vuelca un log sobre el fichero fic_log"
+    echo "       -i n           copia incremental para n copias.        				          "
+    echo "" 
+    echo "  Hace una copia desde el directorio base origen al directorio base destino"
+    echo "  del directorio / ficheros indicado en lista_ficheros, sobre el archivo nom_fichero"
+    echo "  haciendo copias CICLICAS,  NORMALES, INCREMENTALES_CICLICAS_ALTERNANTES ."
+    echo ""
+    echo "  Ejemplo: "
+    echo "  ./copiaSeguridad -c 7 /atcanet/usuarios /atcanet/desarrollo/basura copia  comun fbelloso"
+    echo ""
+    echo "    Hace un tar ciclio de /atcanet/usuarios/comun y /atcanet/usuarios/fbelloso sobre el "
+    echo "    archivo /atcanet/desarrollo/basura/copiaX.tar.gz donde X es el numero de copia."
+    echo ""
+    echo "													  "
+    echo "      Ej. COPIA INCREMENTAL:										  "
+    echo "                             ./copiaSeguridad -i 7 dir_origen dir_destino nom_fichero lista_ficheros    "
+    echo "    									                                  "
+    echo "      DIA  TIPO_DE_BACKUP    BACKUP   |      DIA   TIPO_DE_BACKUP    BACKUP                             "
+    echo "	----------------------------------------------------------------------				  "
+    echo "	1    Completa             A     |      8     Completa            B                                "
+    echo "	2    Incremental          A     |      9     Incremental	 B				  "
+    echo "      3    Incremental          A     |      10    Incremental	 B				  "
+    echo "	4    Incremental          A     |      11    Incremental	 B				  "
+    echo "      5    Incremental          A     |      12    Incremental	 B				  "
+    echo "      6    Incremental          A     |      13    Incremental	 B				  "
+    echo "      7    Incremental          A     |      14    Incremental         B     				  "
+    echo " 	     (Borra 8-14 si existen)		     (Borra 1-7)                             		  "
+    echo "      ----------------------------------------------------------------------				  "
+    echo "				   									  "
+    echo "      Nomenclatura de los ficheros comprimidos:				   			  "
+    echo "				              nom_ficheroFull_A.tar.gz  ---> Copia completa (backup A)    "
+    echo "                    			      nom_ficheroInc?_B.tar.gz  ---> Copia incremental numero ? (backup B) "
+    echo "									    (La mas reciente es la numero 1 ?=1)       "
+    echo "      Los ficheros incrementales se van rotando de forma que el de menor numero es la mas reciente.     "
+    echo "													  "
+    echo "  Hace una copia desde el directorio base origen al directorio base destino"
+    echo "  del directorio / ficheros indicado en lista_ficheros, sobre el archivo nom_fichero"
+    echo "  haciendo copias CICLICAS,  NORMALES, INCREMENTALES_CICLICAS_ALTERNANTES ."
+    echo ""
+    echo "  Ejemplo: "
+    echo "  ./copiaSeguridad -c 7 /atcanet/usuarios /atcanet/desarrollo/basura copia  comun fbelloso"
+    echo ""
+    echo "    Hace un tar ciclio de /atcanet/usuarios/comun y /atcanet/usuarios/fbelloso sobre el "
+    echo "    archivo /atcanet/desarrollo/basura/copiaX.tar.gz donde X es el numero de copia."
+    echo ""
+    exit 1
+fi
+
+seguir="si"
+ext="tar.gz"
+excluye=""
+
+while [ "$seguir" = "si" -a $# -ge 1 ]; do
+    case $1 in
+	-c)	shift
+		numero=$1
+		ciclica="si"
+		shift;;
+	-X)	shift
+		excluye=$1
+		shift;;
+	-l)	shift
+	        ficLog=$1
+		shift
+		exec >> $ficLog
+		exec 2>> $ficLog   #si se quiere log se redireccionan todas las salidas a ese fichero
+		;;
+	-e)	expandida="si"
+		shift;;		
+        -i)     shift
+	        incremental="si"
+	        numincrement=$1
+	        shift;;
+	*)	seguir="no";;
+    esac
+done
+
+# He leido las opciones ahora leo los parametros fijos
+dir_origen=$1
+shift
+
+dir_destino=$1
+if [ "`expr substr $dir_destino 1 1`" != "/" ]; then
+  dir_destino=`pwd`/$dir_destino
+fi
+shift
+echo : cd $dir_origen
+cd $dir_origen
+
+# falta saber cual es el directorio actual para concatenarlo con el destino (si es relativo)
+
+if [ "$expandida" != "si" ]; then
+    nom_fichero=$1
+    shift
+else
+    cp -aPvu $* $dir_destino
+    exit 0
+fi
+
+# He leido los parametros fijos, el resto de parametros son los ficheros a copiar
+#echo Copiando, parametros: $dir_origen $dir_destino $nom_fichero
+#echo Opciones: $numero $log $expandida
+#echo Ficheros: $*
+
+if [ "$excluye" != "" ]; then
+  excluye="-X "$excluye  
+fi
+
+backup="A"
+if [ "$incremental" = "si" ]; then
+ if [ "$ciclica" = "si"  ]; then
+    echo " Error de sintaxis: los parametros -c y -i son exclusivos " 
+    exit 0
+ else      
+    if [ $backup = "A" ]; then
+        if [ ! -s $dir_destino/${nom_fichero}Full_A.$ext ]; then	 
+	    echo : tar cvzf $dir_destino/${nom_fichero}Full_A.$ext -g $dir_destino/snapshotA $* $excluye
+            tar cvzf $dir_destino/${nom_fichero}Full_A.$ext -g $dir_destino/snapshotA $* $excluye        
+	    exit 0
+        else
+            if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_A.$ext ]; then 	    	    	    
+	       backup="B"
+	    fi
+	    if [ $backup = "A" ]; then 
+	       aux=$numincrement
+	       while [ $aux -ge 3 ]; do     	            
+	          if [ -s $dir_destino/${nom_fichero}Inc`expr $aux - 2`_A.$ext ]; then 		 
+		     echo : mv -f $dir_destino/${nom_fichero}Inc`expr $aux - 2`_A.$ext $dir_destino/${nom_fichero}Inc`expr ${aux} - 1`_A.$ext
+                     mv -f $dir_destino/${nom_fichero}Inc`expr $aux - 2`_A.$ext $dir_destino/${nom_fichero}Inc`expr ${aux} - 1`_A.$ext 
+	          fi		 
+		  aux=`expr $aux - 1`
+               done	    
+	       echo : tar cvzf $dir_destino/${nom_fichero}Inc1_A.$ext -g $dir_destino/snapshotA $* $excluye
+	       tar cvzf $dir_destino/${nom_fichero}Inc1_A.$ext -g $dir_destino/snapshotA $* $excluye	    	    	    
+	       if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_A.$ext ]; then 
+                  if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_B.$ext ]; then 
+		    echo : rm $dir_destino/${nom_fichero}*B.$ext
+                    rm $dir_destino/${nom_fichero}*B.$ext
+		    echo : rm $dir_destino/snapshotB 
+		    rm $dir_destino/snapshotB
+                  fi
+               fi
+	       exit 0
+	    fi    
+        fi	
+    fi	
+    if [ $backup = "B" ]; then 	 	 
+       if [ ! -s $dir_destino/${nom_fichero}Full_B.$ext ]; then 	  
+          echo : tar cvzf $dir_destino/${nom_fichero}Full_B.$ext -g $dir_destino/snapshotB $* $excluye
+          tar cvzf $dir_destino/${nom_fichero}Full_B.$ext -g $dir_destino/snapshotB $* $excluye
+          exit 0
+       else			      
+           if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_B.$ext ]; then 					  
+              backup="A"
+           fi	 
+	   aux=$numincrement	 
+           while [ $aux -ge 3 ]; do	  
+                if [ -s $dir_destino/${nom_fichero}Inc`expr $aux - 2`_B.$ext ]; then 		       
+		   echo : mv -f $dir_destino/${nom_fichero}Inc`expr $aux - 2`_B.$ext $dir_destino/${nom_fichero}Inc`expr ${aux} - 1`_B.$ext
+                   mv -f $dir_destino/${nom_fichero}Inc`expr $aux - 2`_B.$ext $dir_destino/${nom_fichero}Inc`expr ${aux} - 1`_B.$ext
+                fi		    
+                aux=`expr $aux - 1`
+           done			
+	   echo : tar cvzf $dir_destino/${nom_fichero}Inc1_B.$ext -g $dir_destino/snapshotB $* $excluye			 
+           tar cvzf $dir_destino/${nom_fichero}Inc1_B.$ext -g $dir_destino/snapshotB $* $excluye
+      	   if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_B.$ext ]; then 
+              if [ -s $dir_destino/${nom_fichero}Inc`expr $numincrement - 1`_A.$ext ]; then 
+	         echo : rm $dir_destino/${nom_fichero}*A.$ext 
+                 rm $dir_destino/${nom_fichero}*A.$ext
+		 echo : rm $dir_destino/snapshotA
+		 rm $dir_destino/snapshotA
+               fi
+	   fi
+	   exit 0
+      fi
+   fi
+ fi 
+fi
+ 
+#copia ciclica con tar 
+if [ -n "$numero" ]; then
+    while [ $numero -ge 2 ]; do
+	echo : mv -f $dir_destino/${nom_fichero}`expr $numero - 1`.$ext $dir_destino/${nom_fichero}${numero}.$ext
+	mv -f $dir_destino/${nom_fichero}`expr $numero - 1`.$ext $dir_destino/${nom_fichero}${numero}.$ext
+	numero=`expr $numero - 1`
+    done
+
+    echo : tar cvpzf $dir_destino/${nom_fichero}1.$ext $* $excluye
+    tar cvpzf $dir_destino/${nom_fichero}1.$ext $* $excluye
+    exit 0
+fi
+
+#copia normal con el tar
+tar cvpzf $dir_destino/$nom_fichero.$ext $*
+
+

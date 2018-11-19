@@ -1,0 +1,31 @@
+#!/bin/bash
+#mandar e-mail cuando hay virus
+
+cat /dev/null > /var/log/panda/pavcl.log
+
+if [ "$1" != "" ]; 
+
+then
+
+  pavcl $1 -aut -aex
+
+  cd /var/log/panda
+
+    if test -s pavcl.log
+
+    then
+
+#echo Hay virus en `hostname`
+  
+    cat pavcl.log | mail -s "Hay virus en $HOSTNAME " fbelloso@tauro
+
+    
+    fi
+
+else
+
+  echo "uso: virussearch <directorio>"
+
+fi
+
+exit 0
