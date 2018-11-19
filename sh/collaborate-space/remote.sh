@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-_REMOTE_CREATE_TARBALL='tar czf COLLABORATE-Space-1.0.tar.gz COLLABORATE-Space'
+_REMOTE_CREATE_TARBALL='tar czf COLLABORATE-Space-1.0.tar.gz COLLABORATE-Space-1'
 _SPEC=COLLABORATE-Space.spec
 
 cd /rpmSources

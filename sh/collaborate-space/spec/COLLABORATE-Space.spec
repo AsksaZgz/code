@@ -24,5 +24,5 @@ install -m 0644 admin.war $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/admin.war
 /usr/local/COLLABORATE-Space
 
 %changelog
-* 19/11/2018 ClearOne JBG  1.0.0
+* Mon Nov 19 2018 ClearOne JBG  1.0.0
   - Initial rpm release
