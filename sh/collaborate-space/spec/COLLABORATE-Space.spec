@@ -1,4 +1,4 @@
-Name:           COLLABORATE Space
+Name:           COLLABORATE-Space
 Version:        1
 Release:        0
 Summary:        COLLABORATE Space RPM
