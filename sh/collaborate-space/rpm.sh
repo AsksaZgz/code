@@ -20,7 +20,7 @@ function send()
 function sendSource()
 {
     _sendSourcesFile=$1
-    send rpmSources/COLLABORATE-Space/COLLABORATE-Space-1 $_sendSourcesFile
+    send rpmSources/COLLABORATE-Space-1 $_sendSourcesFile
 }
 
 
@@ -35,9 +35,11 @@ function remoteExec()
 
 function main()
 {
+    remoteExec '/root/git/code/sh/collaborate-space/remote.sh before-build'
     sendSource /root/git/Admin/war/admin.war
-    remoteExec '/root/git/code/sh/collaborate-space/remote.sh'
-
+    remoteExec '/root/git/code/sh/collaborate-space/remote.sh build'
 }
 
 main
+
+
