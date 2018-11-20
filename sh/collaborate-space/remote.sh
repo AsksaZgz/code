@@ -4,7 +4,13 @@ _REMOTE_CREATE_TARBALL=''
 _SPEC=COLLABORATE-Space.spec
 _SOURCES_FOLDER=COLLABORATE-Space-1
 
-_remoteAction=$1
+
+_TEST_PASS=clearone!
+_TEST_SERVER=root@192.168.0.37
+
+_RPM=COLLABORATE-Space-1-0.noarch.rpm
+
+
 
 ### Create tarball
 function tarball()
@@ -28,12 +34,32 @@ function spec()
 ### BUILD RPM
 function build()
 {
+    cd /rpmRpms
+    rm * -rf
     cd /rpmBuild
     rm * -rf
 
+    cd /rpm
     rpmbuild -ba /rpmSpecs/$_SPEC
 }
 
+function testSend()
+{
+    _testSendFile=$1
+    _testSendTarget=tmp
+
+    sshpass -p $_TEST_PASS scp $_testSendFile $_TEST_SERVER:/$_testSendTarget
+
+}
+
+
+function testExec()
+{
+    _testExec=$1
+
+    sshpass -p $_TEST_PASS ssh $_TEST_SERVER "$_testExec"
+
+}
 
 function actionBeforeBuild()
 {
@@ -42,7 +68,6 @@ function actionBeforeBuild()
     mkdir $_SOURCES_FOLDER
 }
 
-
 function actionBuild()
 {
     tarball
@@ -50,14 +75,10 @@ function actionBuild()
     build
 }
 
+function actionTest()
+{
+    # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004
+    testSend '/rpmRpms/noarch/$_RPM'
+    testExec '/tmp/rpm -ivh /tmp/$_RPM'
 
-if [[ $_remoteAction = 'before-build' ]]
-then
-    actionBeforeBuild
-fi
-
-
-if [[ $_remoteAction = 'build' ]]
-then
-    actionBuild
-fi
+}

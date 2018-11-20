@@ -3,10 +3,6 @@
 _REMOTE_PASS=clearone!
 _REMOTE_SERVER=root@192.168.0.17
 
-_TEST_PASS=clearone!
-_TEST_SERVER=root@192.168.0.37
-
-_RPM=COLLABORATE-Space-1-0.noarch.rpm
 
 
 
@@ -20,22 +16,12 @@ function send()
 
 }
 
+
 function sendSource()
 {
     _sendSourcesFile=$1
     send rpmSources/COLLABORATE-Space-1 $_sendSourcesFile
 }
-
-
-function testSend()
-{
-    _testSendFile=$1
-    _testSendTarget=tmp
-
-    sshpass -p $_TEST_PASS scp $_testSendFile $_TEST_SERVER:/$_testSendTarget
-
-}
-
 
 
 function remoteExec()
@@ -46,22 +32,15 @@ function remoteExec()
 
 }
 
-function testExec()
-{
-    _testExec=$1
-
-    sshpass -p $_TEST_PASS ssh $_TEST_SERVER "$_remoteExec"
-
-}
 
 function main()
 {
     remoteExec '/root/git/code/sh/collaborate-space/remote.sh before-build'
     sendSource /root/git/Admin/war/admin.war
     remoteExec '/root/git/code/sh/collaborate-space/remote.sh build'
+    # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004
+    remoteExec '/root/git/code/sh/collaborate-space/remote.sh test'
 
-    testSend '/rpmRpms/noarch/$_RPM'
-    testExec '/tmp/rpm -ivh /tmp/$_RPM'
 }
 
 main
