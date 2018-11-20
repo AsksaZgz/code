@@ -30,6 +30,7 @@ function build()
 {
     cd /rpmBuild
     rm * -rf
+    cd ..
     rpmbuild -ba SPECS/$_SPEC
 }
 
