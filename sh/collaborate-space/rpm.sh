@@ -20,7 +20,7 @@ function send()
 function sendSource()
 {
     _sendSourcesFile=$1
-    send rpmSources/COLLABORATE-Space-1 $_sendSourcesFile
+    send rpmSources/COLLABORATE-Space/COLLABORATE-Space-1 $_sendSourcesFile
 }
 
 
