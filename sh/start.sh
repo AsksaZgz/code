@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 service postgresql start
 service openfire start
 /usr/local/tomcat/webapps/webconference/scripts/ssup/ssup.sh

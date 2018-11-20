@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+. /sh/dev/log.sh
 
 _REMOTE_PASS=clearone!
 _REMOTE_SERVER=root@192.168.0.17
@@ -27,19 +28,26 @@ function sendSource()
 function remoteExec()
 {
     _remoteExec=$1
+    echo RPM - REMOTE EXEC - INIT
+    echo PARAM - _remoteExec: $_remoteExec
 
     sshpass -p $_REMOTE_PASS ssh $_REMOTE_SERVER "$_remoteExec"
+    echo RPM - REMOTE EXEC - END
 
 }
 
 
 function main()
 {
-    remoteExec '/root/git/code/sh/collaborate-space/remote.sh before-build'
-    sendSource /root/git/Admin/war/admin.war
-    remoteExec '/root/git/code/sh/collaborate-space/remote.sh build'
-    # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004
-    remoteExec '/root/git/code/sh/collaborate-space/remote.sh test'
+
+    logSet /tmp/COLLABORATE-Space-rpm
+    log "RPM - MAIN - INIT" --screen
+    remoteExec '/sh/collaborate-space/remote.action.sh before-build' >> $LOG
+    sendSource /root/git/Admin/war/admin.war >> $LOG
+    remoteExec '/sh/collaborate-space/remote.action.sh build' >> $LOG
+    # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004 >> $LOG
+    remoteExec '/sh/collaborate-space/remote.action.sh test' >> $LOG
+    log "RPM - MAIN - END" --screen
 
 }
 
