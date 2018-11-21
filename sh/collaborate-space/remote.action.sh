@@ -6,7 +6,7 @@ _remoteAction=$1
 
 if [[ $_remoteAction = 'before-build' ]]
 then
-    actionBeforjeBuild
+    actionBeforeBuild
 fi
 
 
