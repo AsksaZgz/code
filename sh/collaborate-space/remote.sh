@@ -79,6 +79,6 @@ function actionTest()
 {
     # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004
     testSend "/rpmRpms/noarch/$_RPM"
-    testExec "/tmp/rpm -ivh /tmp/$_RPM"
+    testExec "rpm -ivh /tmp/$_RPM"
 
 }

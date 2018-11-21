@@ -17,16 +17,16 @@ function log()
 #    _logText=$(date +%Y%m%d%H%M%S) $1
     _logParam=$2
 
-    echo $_logText >> $LOG
+    echo -e $_logText >> $LOG
 
     if [[ $_logParam = '--screen' ]]
     then
-        echo $_logText
+        echo -e $_logText
     fi
 
     if [[ $_logParam = '-s' ]]
     then
-        echo $_logText
+        echo -e $_logText
     fi
 
 }
