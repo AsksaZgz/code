@@ -42,15 +42,19 @@ function main()
 
     logSet /tmp/COLLABORATE-Space-rpm
     log "RPM - MAIN - INIT" --screen
-    remoteExec '/sh/collaborate-space/remote.action.sh before-build' >> $LOG
+    remoteExec '/sh/collaborate-space/rpm/remote.action.sh before-build' >> $LOG
     sendSource /root/git/Admin/war/admin.war >> $LOG
-    remoteExec '/sh/collaborate-space/remote.action.sh build' >> $LOG
+    remoteExec '/sh/collaborate-space/rpm/remote.action.sh build' >> $LOG
     # 0.5.0 - COLLABORATE pace - RPM - Test Action - 1811201004 >> $LOG
     remoteExec '/sh/collaborate-space/remote.action.sh test' >> $LOG
     log "RPM - MAIN - END" --screen
 
 }
 
-main
+function javaDownload()
+{
+    yum install --downloadonly --downloaddir=/tmp
+
+}
 
 

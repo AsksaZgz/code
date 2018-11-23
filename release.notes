@@ -1,6 +1,11 @@
 CODE
 
 
+0.6.0 - COLLABORATE Space - RPM - Java - 1811231337
+        yum, yum-plugin-copr yum-plugin-fastestmirror, yum-utils-1.1.31-46.el7_5.noarch
+
+
+
 0.5.2 - COLLABORATE Space - RPM - Test Action Bug - 1811201004
 
 

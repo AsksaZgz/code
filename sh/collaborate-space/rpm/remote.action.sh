@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. /sh/collaborate-space/remote.sh
+. /sh/collaborate-space/rpm/remote.sh
 
 _remoteAction=$1
 
