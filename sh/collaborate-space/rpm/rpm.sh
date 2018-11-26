@@ -51,10 +51,24 @@ function main()
 
 }
 
+function actionTest()
+{
+    remoteExec '/sh/collaborate-space/rpm/remote.action.sh before-build'
+}
+
+### https://access.redhat.com/solutions/10154
 function javaDownload()
 {
-    yum install --downloadonly --downloaddir=/tmp
+    yum install --downloadonly --downloaddir=/tmp/java java
 
 }
 
+# 0.6.0 - COLLABORATE Space - RPM - Java - 1811231337
+function javaInstallLocal()
+{
+    yum --nogpgcheck localinstall java-1.8.0-openjdk-1.8.0.191.b12-0.el7_5.x86_64.rpm
+
+}
+
+}
 

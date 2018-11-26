@@ -19,6 +19,7 @@ COLLABORATE Space
 # Create directory
 install -m 0755 -d $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space
 install -m 0644 admin.war $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/admin.war
+install -m 0644 java.tar.gz $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/java.tar.gz
 
 %files
 /usr/local/COLLABORATE-Space

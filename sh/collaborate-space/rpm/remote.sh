@@ -66,6 +66,11 @@ function actionBeforeBuild()
     cd /rpmSources
     rm * -rf
     mkdir $_SOURCES_FOLDER
+
+    ### Tools
+    ### Java
+    cd $_SOURCES_FOLDER
+    cp /rpmTool/java.tar.gz .
 }
 
 function actionBuild()

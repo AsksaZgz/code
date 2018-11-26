@@ -16,3 +16,7 @@ then
     javaDownload
 fi
 
+if [[ $_action = 'test' ]]
+then
+    actionTest
+fi
