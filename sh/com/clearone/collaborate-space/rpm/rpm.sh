@@ -77,5 +77,22 @@ function dcsWatchToolsDownload() {
 function dcsWatchInstallLocal()
 {
     yum --nogpgcheck localinstall net-tools-2.0-0.22.20131004git.el7.x86_64.rpm perl-5.16.3-292.el7.x86_64.rpm psmisc-22.20-15.el7.x86_64.rpm
+
     yum --nogpgcheck localinstall libgcc-4.8.5-28.el7_5.1.x86_64.rpm libstdc++-4.8.5-28.el7_5.1.x86_64.rpm
 }
+
+#0.9.0 - COLLABORATE Space - RPM - Postgresql - 1811271651
+function postgresqlDownload() {
+    yum install --downloadonly --downloaddir=/tmp/post2 libtool-ltdl perl-Data-Dumper
+    wget https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+    yum --nogpgcheck localinstall pgdg-centos10-10-2.noarch.rpm
+    yum install --downloadonly --downloaddir=/tmp/post10 postgresql10 postgresql10-server
+#    yum install --downloadonly --downloaddir=/tmp/post postgresql-libs postgresql postgresql-odbc postgresql-server net-snmp net-snmp-libs net-snmp-perl net-snmp-utils unixODBC lm_sensors
+}
+
+#0.9.0 - COLLABORATE Space - RPM - Postgresql - 1811271651
+function postgresql-InstallLocal()
+{
+    yum --nogpgcheck localinstall libicu* postgresql10*
+}
+

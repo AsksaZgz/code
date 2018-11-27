@@ -21,11 +21,14 @@ COLLABORATE Space
 install -m 0755 -d $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space
 
 install -m 0644 admin.war $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/admin.war
-install -m 0644 java.tar.gz $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/java.tar.gz
+
+#0.8.0 - COLLABORATE Space - RPM - DcsWatch - 1811271135
+#install -m 0644 java.tar.gz $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/java.tar.gz
 
 #0.7.0 - COLLABORATE Space - RPM - Tomcat - 181811270949
 install -m 0644 apache-tomcat-9.0.13.tar.gz $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/apache-tomcat-9.0.13.tar.gz
-
+0.8.0 - COLLABORATE Space - RPM - DcsWatch - 1811271135
+install -m 0644 repo.tar.gz $RPM_BUILD_ROOT/usr/local/COLLABORATE-Space/repo.tar.gz
 
 %files
 /usr/local/COLLABORATE-Space
