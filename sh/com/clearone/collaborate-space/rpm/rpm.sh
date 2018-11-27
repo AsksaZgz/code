@@ -67,8 +67,5 @@ function javaDownload()
 function javaInstallLocal()
 {
     yum --nogpgcheck localinstall java-1.8.0-openjdk-1.8.0.191.b12-0.el7_5.x86_64.rpm
-
-}
-
 }
 
