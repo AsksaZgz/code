@@ -66,7 +66,8 @@ function testExec()
 function defineRepo()
 {
     cd /rpmTool/repo
-    tar --create --gzip --verbose --file=./repo.tar.gz *
+    tar --create --gzip --verbose --file=../repo.tar.gz *
+#    mv repo.tar.gz ../repo.tar.gz
 }
 
 function actionBeforeBuild()
@@ -78,7 +79,7 @@ function actionBeforeBuild()
     ### Tools
     defineRepo
     ### Java
-    cd $_SOURCES_FOLDER
+    cd /rpmSources/$_SOURCES_FOLDER
     cp /rpmTool/* .
 }
 
