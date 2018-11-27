@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# 0.6.0 - COLLABORATE Space - RPM - Java - 1811231337
+# 0.7.0 - COLLABORATE Space - RPM - Tomcat - 181811270949
 
-. /sh/collaborate-space/rpm/config.sh
+. ./setup.sh
 . /csRpm/rpm.sh
 
 _action=$1

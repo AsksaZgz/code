@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. /sh/collaborate-space/rpm/remote.sh
+. ./setup.sh
+. /csRpm/remote.sh
 
 _remoteAction=$1
 

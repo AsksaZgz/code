@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+. ./setup.sh
 
 _REMOTE_CREATE_TARBALL=''
 _SPEC=COLLABORATE-Space.spec
@@ -26,7 +27,7 @@ function spec()
 {
     cd /rpmSpecs
     rm *.specs -f
-    cd /root/git/code/sh/collaborate-space/spec
+    cd /csRpm/spec
     cp $_SPEC /rpmSpecs
 }
 
@@ -70,7 +71,7 @@ function actionBeforeBuild()
     ### Tools
     ### Java
     cd $_SOURCES_FOLDER
-    cp /rpmTool/java.tar.gz .
+    cp /rpmTool/* .
 }
 
 function actionBuild()
