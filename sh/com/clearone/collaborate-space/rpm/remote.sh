@@ -62,6 +62,13 @@ function testExec()
 
 }
 
+#0.8.0 - COLLABORATE Space - RPM - DcsWatch - 1811271135
+function defineRepo()
+{
+    cd /rpmTool/repo
+    tar --create --gzip --verbose --file=./repo.tar.gz *
+}
+
 function actionBeforeBuild()
 {
     cd /rpmSources
@@ -69,6 +76,7 @@ function actionBeforeBuild()
     mkdir $_SOURCES_FOLDER
 
     ### Tools
+    defineRepo
     ### Java
     cd $_SOURCES_FOLDER
     cp /rpmTool/* .

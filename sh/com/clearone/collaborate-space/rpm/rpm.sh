@@ -61,7 +61,6 @@ function actionTest()
 function javaDownload()
 {
     yum install --downloadonly --downloaddir=/tmp/java java
-
 }
 
 # 0.6.0 - COLLABORATE Space - RPM - Java - 1811231337
@@ -70,3 +69,13 @@ function javaInstallLocal()
     yum --nogpgcheck localinstall java-1.8.0-openjdk-1.8.0.191.b12-0.el7_5.x86_64.rpm
 }
 
+## 0.7.0 - COLLABORATE Space - RPM - Tomcat - 181811270949
+function dcsWatchToolsDownload() {
+    yum install --downloadonly --downloaddir=/tmp/dcswatch net-tools perl psmisc glibc libgcc libstdc++ nss-softikn-freebl
+}
+
+function dcsWatchInstallLocal()
+{
+    yum --nogpgcheck localinstall net-tools-2.0-0.22.20131004git.el7.x86_64.rpm perl-5.16.3-292.el7.x86_64.rpm psmisc-22.20-15.el7.x86_64.rpm
+    yum --nogpgcheck localinstall libgcc-4.8.5-28.el7_5.1.x86_64.rpm libstdc++-4.8.5-28.el7_5.1.x86_64.rpm
+}

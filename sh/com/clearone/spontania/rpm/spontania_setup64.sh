@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 package=Spontania
 version=`rpm -q --queryformat %{VERSION} $package`
 release=`rpm -q --queryformat %{RELEASE} $package`
