@@ -107,7 +107,9 @@ function xmlrpc-installLocal() {
 }
 
 
-
-
+#function gateway() {
+#    sshpass -p $_REMOTE_PASS
+#
+#}
 
 

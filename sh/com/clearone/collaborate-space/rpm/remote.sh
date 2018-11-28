@@ -63,11 +63,37 @@ function testExec()
 }
 
 #0.8.0 - COLLABORATE Space - RPM - DcsWatch - 1811271135
-function defineRepo()
+function repositoryDefine()
 {
-    cd /rpmTool/repo
-    tar --create --gzip --verbose --file=../repo.tar.gz *
-#    mv repo.tar.gz ../repo.tar.gz
+    _repositoryDefineFileName=repository.tar.gz
+    cd /rpmTool/repository
+    rm  $_repositoryDefineFileName -f
+    tar --create --gzip --verbose --file=/rpmSources/$_repositoryDefineFileName *
+}
+
+#0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
+function gatewayDefine()
+{
+    # delete previous versions
+    cd /rpmRepository
+    rm SpontaniaGateway* -f
+
+    _gatewayDefineSource=\\\\192.168.1.253\\Versions\\VAS\\Gateways\\SpontaniaGateway\\x64
+    _gatewayDefineTarget=/rpmGateway
+    _gatewayDefineParam="user=jesus.bernad,uid=5000,gid=6000,pass=clearone2015!"
+    umount $_gatewayDefineTarget
+    # --parents No error if existing
+    mkdir $_gatewayDefineTarget --parents
+    mount.cifs $_gatewayDefineSource $_gatewayDefineTarget -o $_gatewayDefineParam
+    cd $_gatewayDefineTarget
+
+    _gatewayDefineVersions=(`ls --sort=time --format=single-column /rpmGateway`)
+
+    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
+    echo $_gatewayDefineLastVersion
+    cd $_gatewayDefineLastVersion/RPMS
+
+    cp *.rpm /rpmSources/$_SOURCES_FOLDER
 }
 
 function actionBeforeBuild()
@@ -77,7 +103,7 @@ function actionBeforeBuild()
     mkdir $_SOURCES_FOLDER
 
     ### Tools
-    defineRepo
+    repositoryDefine
     ### Java
     cd /rpmSources/$_SOURCES_FOLDER
     cp /rpmTool/* .
