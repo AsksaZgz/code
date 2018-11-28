@@ -68,7 +68,7 @@ function repositoryDefine()
     _repositoryDefineFileName=repository.tar.gz
     cd /rpmTool/repository
     rm  $_repositoryDefineFileName -f
-    tar --create --gzip --verbose --file=/rpmSources/$_repositoryDefineFileName *
+    tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName *
 }
 
 #0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
@@ -103,6 +103,7 @@ function actionBeforeBuild()
     mkdir $_SOURCES_FOLDER
 
     ### Tools
+    gatewayDefine
     repositoryDefine
     ### Java
     cd /rpmSources/$_SOURCES_FOLDER
