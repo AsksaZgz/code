@@ -96,3 +96,18 @@ function postgresql-InstallLocal()
     yum --nogpgcheck localinstall libicu* postgresql10*
 }
 
+#0.10.0 - COLLABORATE Space - RPM - xmlrpc - 1811271803
+function xmlrpc-download() {
+    yum install --downloadonly --downloaddir=/tmp/xmlrpc xmlrpc-c*
+}
+
+#0.10.0 - COLLABORATE Space - RPM - xmlrpc - 1811271803
+function xmlrpc-installLocal() {
+    yum --nogpgcheck localinstall xmlrpc-c*
+}
+
+
+
+
+
+
