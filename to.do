@@ -1,6 +1,25 @@
 ToDo:
 
-1811271319 Añadir un repositorio local de yum
+
+0.12.0 - COLLABORATE Space - RPM - Projects - 1811281403
+    Admin
+    CollaborateLiteral
+    CollaborateWeb
+    Partners
+    Portal
+
+    com.clearone.collaborate.services
+    SpontaniaApi
+    RestApiClient?
+
+
+1811281355 Que hacer con las licencias
+
+
+1811281353 Que hacer con openfire
+
+
+1811281354 Subir las versiones de cliente: mac y windows
 
 
 1811271648 /etc/dcswatch-config.xml
