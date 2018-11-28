@@ -93,7 +93,7 @@ function gatewayDefine()
     echo $_gatewayDefineLastVersion
     cd $_gatewayDefineLastVersion/RPMS
 
-    cp *.rpm /rpmSources/$_SOURCES_FOLDER
+    cp *.rpm /rpmRepository
 }
 
 function actionBeforeBuild()
