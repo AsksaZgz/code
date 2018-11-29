@@ -96,20 +96,32 @@ function gatewayDefine()
     cp *.rpm /rpmRepository
 }
 
+##0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
+#function spontaniaApiDefine()
+#{
+##    181811281514 Copy to .net
+#     cd /rpmJar
+#     sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/xmlrpcapi.jar .
+#
+#}
+
 #0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
-function spontaniaApiDefine()
+function collaborateJarDefine()
 {
-#    181811281514 Copy to .net
-     cd /rpmJar
-     sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/xmlrpcapi.jar .
+    cd /rpmJar
+    rm * -f
+    sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/collaborate/* .
+#    scp $(find *.jar -group collaborate) root@192.168.0.17:/rpmJar
+#     sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/xmlrpcapi.jar .
 
 }
 
-#0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
-function jarDefine()
-{
-    spontaniaApiDefine
-}
+##0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
+#function jarDefine()
+#{
+#    spontaniaApiDefine
+#    spontaniaApiExternalJar
+#}
 
 function actionBeforeBuild()
 {
@@ -121,7 +133,7 @@ function actionBeforeBuild()
     gatewayDefine
     repositoryDefine
 
-    jarDefine
+    collaborateJarDefine
 
     cd /rpmSources/$_SOURCES_FOLDER
     cp /rpmTool/* .

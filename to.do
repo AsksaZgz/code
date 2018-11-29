@@ -7,8 +7,8 @@ ToDo:
     CollaborateWeb
     Partners
     Portal
-
     com.clearone.collaborate.services
+
     SpontaniaApi
     RestApiClient?
 
