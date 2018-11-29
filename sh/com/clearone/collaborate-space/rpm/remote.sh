@@ -11,7 +11,7 @@ _TEST_SERVER=root@192.168.0.37
 
 _RPM=COLLABORATE-Space-1-0.noarch.rpm
 
-
+_GATEWAY_VERSION=
 
 ### Create tarball
 function tarball()
@@ -83,10 +83,10 @@ function gatewayDefineLastVersion()
 
     _gatewayDefineLastVersionList=(`ls --sort=time --format=single-column /rpmGateway`)
 
-    _gatewayDefineLastVersionLast=${_gatewayDefineLastVersionList[0]}
-    echo $_gatewayDefineLastVersionLast
+    _GATEWAY_VERSION=${_gatewayDefineLastVersionList[0]}
+    echo $_GATEWAY_VERSION
+    
 
-    return $_gatewayDefineLastVersionLast
 }
 
 #0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
@@ -117,8 +117,8 @@ function gatewayDefine()
 #    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
 #    echo $_gatewayDefineLastVersion
 
-    _gatewayDefineLastVersion=(gatewayDefineLastVersion)
-    cd $_gatewayDefineLastVersion/RPMS
+    gatewayDefineLastVersion
+    cd $_GATEWAY_VERSION/RPMS
 
     cp *.rpm /rpmRepository
 }
