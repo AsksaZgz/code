@@ -54,7 +54,13 @@ function main()
 
 function actionProof()
 {
-    remoteExec '/csRpm/remote.action.sh proof'
+    remoteExec '/csRpm/remote.action.sh gatewayDefine'
+}
+
+function actionRem()
+{
+    _actionRem=$1
+    remoteExec '/csRpm/remote.action.sh dev $_actionRem'
 }
 
 function actionTest()
@@ -112,9 +118,8 @@ function xmlrpc-installLocal() {
 }
 
 
-#function gateway() {
-#    sshpass -p $_REMOTE_PASS
-#
-#}
-
+function ok()
+{
+    echo "OK"
+}
 

@@ -70,26 +70,54 @@ function repositoryDefine()
     tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName *
 }
 
+function gatewayDefineLastVersion()
+{
+    _gatewayDefineLastVersionSource=\\\\192.168.1.253\\Versions\\VAS\\Gateways\\SpontaniaGateway\\x64
+    _gatewayDefineLastVersionTarget=/rpmGateway
+    _gatewayDefineLastVersionParam="user=jesus.bernad,uid=5000,gid=6000,pass=clearone2015!"
+    umount $_gatewayDefineLastVersionTarget
+    # --parents No error if existing
+    mkdir $_gatewayDefineLastVersionTarget --parents
+    mount.cifs $_gatewayDefineLastVersionSource $_gatewayDefineLastVersionTarget -o $_gatewayDefineLastVersionParam
+    cd $_gatewayDefineLastVersionTarget
+
+    _gatewayDefineLastVersionList=(`ls --sort=time --format=single-column /rpmGateway`)
+
+    _gatewayDefineLastVersionLast=${_gatewayDefineLastVersionList[0]}
+    echo $_gatewayDefineLastVersionLast
+
+    return $_gatewayDefineLastVersionLast
+}
+
 #0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
-function gatewayDefine()
+function gatewayDefinePrepare()
 {
     # delete previous versions
     cd /rpmRepository
     rm SpontaniaGateway* -f
+}
 
-    _gatewayDefineSource=\\\\192.168.1.253\\Versions\\VAS\\Gateways\\SpontaniaGateway\\x64
-    _gatewayDefineTarget=/rpmGateway
-    _gatewayDefineParam="user=jesus.bernad,uid=5000,gid=6000,pass=clearone2015!"
-    umount $_gatewayDefineTarget
-    # --parents No error if existing
-    mkdir $_gatewayDefineTarget --parents
-    mount.cifs $_gatewayDefineSource $_gatewayDefineTarget -o $_gatewayDefineParam
-    cd $_gatewayDefineTarget
+#0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
+function gatewayDefine()
+{
+    # delete previous versions
+    gatewayDefinePrepare
 
-    _gatewayDefineVersions=(`ls --sort=time --format=single-column /rpmGateway`)
+#    _gatewayDefineSource=\\\\192.168.1.253\\Versions\\VAS\\Gateways\\SpontaniaGateway\\x64
+#    _gatewayDefineTarget=/rpmGateway
+#    _gatewayDefineParam="user=jesus.bernad,uid=5000,gid=6000,pass=clearone2015!"
+#    umount $_gatewayDefineTarget
+#    # --parents No error if existing
+#    mkdir $_gatewayDefineTarget --parents
+#    mount.cifs $_gatewayDefineSource $_gatewayDefineTarget -o $_gatewayDefineParam
+#    cd $_gatewayDefineTarget
+#
+#    _gatewayDefineVersions=(`ls --sort=time --format=single-column /rpmGateway`)
 
-    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
-    echo $_gatewayDefineLastVersion
+#    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
+#    echo $_gatewayDefineLastVersion
+
+    _gatewayDefineLastVersion=gatewayDefineLastVersion
     cd $_gatewayDefineLastVersion/RPMS
 
     cp *.rpm /rpmRepository
@@ -140,9 +168,21 @@ function actionTest()
 
 function actionProof()
 {
-    cd /rpmSources
-    rm * -rf
-    mkdir $_SOURCES_FOLDER
+    echo "actionProof"
+#    cd /rpmSources
+#    rm * -rf
+#    mkdir $_SOURCES_FOLDER
 
 #    collaborateJarDefine
+}
+
+function actionDev()
+{
+    _devAction=$1
+    ($_devAction)
+}
+
+function ok()
+{
+    echo "OK"
 }

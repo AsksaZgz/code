@@ -11,10 +11,6 @@ then
     main
 fi
 
-if [[ $_action = 'java-download' ]]
-then
-    javaDownload
-fi
 
 if [[ $_action = 'test' ]]
 then
@@ -24,4 +20,21 @@ fi
 if [[ $_action = 'proof' ]]
 then
     actionProof
+fi
+
+if [[ $_action = 'dev' ]]
+then
+    echo "ACTION - DEV - INIT --------------------------------------------------"
+    _devAction=$2
+    ($_devAction)
+    echo "ACTION - DEV - END ---------------------------------------------------"
+fi
+
+
+if [[ $_action = 'rem' ]]
+then
+    echo "ACTION - REM - INIT --------------------------------------------------"
+    _devRem=$2
+    actionRem $_devRem
+    echo "ACTION - REM - END ---------------------------------------------------"
 fi
