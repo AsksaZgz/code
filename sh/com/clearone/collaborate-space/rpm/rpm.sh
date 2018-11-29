@@ -60,7 +60,7 @@ function actionProof()
 function actionRem()
 {
     _actionRem=$1
-    remoteExec '/csRpm/remote.action.sh dev $_actionRem'
+    remoteExec "/csRpm/remote.action.sh dev $_actionRem"
 }
 
 function actionTest()
