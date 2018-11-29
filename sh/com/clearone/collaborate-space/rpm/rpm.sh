@@ -54,6 +54,11 @@ function main()
 
 function actionTest()
 {
+    remoteExec '/csRpm/remote.action.sh proof'
+}
+
+function actionTest()
+{
     remoteExec '/csRpm/remote.action.sh before-build'
 }
 

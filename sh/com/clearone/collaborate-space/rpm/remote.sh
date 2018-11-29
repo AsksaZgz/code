@@ -67,7 +67,7 @@ function repositoryDefine()
 {
     _repositoryDefineFileName=repository.tar.gz
     cd /rpmTool/repository
-    rm  $_repositoryDefineFileName -f
+#    rm  $_repositoryDefineFileName -f
     tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName *
 }
 
@@ -108,12 +108,12 @@ function gatewayDefine()
 #0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
 function collaborateJarDefine()
 {
+    _collaborateJarDefineFileName=jar.tar.gz
+
     cd /rpmJar
     rm * -f
     sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/collaborate/* .
-#    scp $(find *.jar -group collaborate) root@192.168.0.17:/rpmJar
-#     sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/xmlrpcapi.jar .
-
+    tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_collaborateJarDefineFileName *
 }
 
 ##0.12.0 - COLLABORATE Space - RPM - SpontaniaApi - 1811281514
@@ -152,4 +152,13 @@ function actionTest()
     testSend "/rpmRpms/noarch/$_RPM"
     testExec "rpm -ivh /tmp/$_RPM"
 
+}
+
+function actionProof()
+{
+    cd /rpmSources
+    rm * -rf
+    mkdir $_SOURCES_FOLDER
+
+    collaborateJarDefine
 }

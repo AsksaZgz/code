@@ -10,7 +10,6 @@ then
     actionBeforeBuild
 fi
 
-
 if [[ $_remoteAction = 'build' ]]
 then
     actionBuild
@@ -20,3 +19,10 @@ if [[ $_remoteAction = 'test' ]]
 then
     actionTest
 fi
+
+if [[ $_remoteAction = 'proof' ]]
+then
+    actionProof
+fi
+
+

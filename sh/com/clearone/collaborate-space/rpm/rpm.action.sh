@@ -20,3 +20,8 @@ if [[ $_action = 'test' ]]
 then
     actionTest
 fi
+
+if [[ $_action = 'proof' ]]
+then
+    actionProf
+fi
