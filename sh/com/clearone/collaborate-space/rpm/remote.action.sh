@@ -25,4 +25,14 @@ then
     actionProof
 fi
 
+if [[ $_remoteAction = 'gatewayDefine' ]]
+then
+    gatewayDefine
+fi
+
+if [[ $_remoteAction = 'repositoryDefine' ]]
+then
+    repositoryDefine
+fi
+
 

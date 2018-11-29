@@ -52,7 +52,7 @@ function main()
 
 }
 
-function actionTest()
+function actionProof()
 {
     remoteExec '/csRpm/remote.action.sh proof'
 }

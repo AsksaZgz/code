@@ -23,5 +23,5 @@ fi
 
 if [[ $_action = 'proof' ]]
 then
-    actionProf
+    actionProof
 fi
