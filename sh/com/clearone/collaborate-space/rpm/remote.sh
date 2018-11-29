@@ -117,7 +117,7 @@ function gatewayDefine()
 #    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
 #    echo $_gatewayDefineLastVersion
 
-    _gatewayDefineLastVersion=gatewayDefineLastVersion
+    _gatewayDefineLastVersion=(gatewayDefineLastVersion)
     cd $_gatewayDefineLastVersion/RPMS
 
     cp *.rpm /rpmRepository
