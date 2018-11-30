@@ -1,17 +1,9 @@
 ToDo:
 
 
-0.12.0 - COLLABORATE Space - RPM - Projects - 1811281403
-    Admin
-    CollaborateLiteral
-    CollaborateWeb
-    Partners
-    Portal
-    com.clearone.collaborate.services
+1811301152 Webconference rehacer
 
-    SpontaniaApi
-    RestApiClient?
-
+1811291315 BD
 
 1811281355 Que hacer con las licencias
 

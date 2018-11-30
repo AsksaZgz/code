@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . ./setup.sh
+. /sh/tool/tar.sh
 
 _REMOTE_CREATE_TARBALL=''
 _SPEC=COLLABORATE-Space.spec
@@ -12,6 +13,19 @@ _TEST_SERVER=root@192.168.0.37
 _RPM=COLLABORATE-Space-1-0.noarch.rpm
 
 _GATEWAY_VERSION=
+
+
+#0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+function prodCopy()
+{
+    _prodCopyTarget=$1
+
+    echo -e "PROD COPY - INIT"
+    echo -e "Target: $_prodCopyTarget"
+    sshpass -p One2015! scp jesus@im.collaboratespace.net:$_prodCopyTarget .
+    echo -e "PROD COPY - INIT"
+
+}
 
 ### Create tarball
 function tarball()
@@ -67,7 +81,9 @@ function repositoryDefine()
 {
     _repositoryDefineFileName=repository.tar.gz
     cd /rpmRepository
-    tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName *
+    # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+    _tar "/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName" "*"
+#    tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_repositoryDefineFileName *
 }
 
 function gatewayDefineLastVersion()
@@ -89,6 +105,34 @@ function gatewayDefineLastVersion()
 
 }
 
+#0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+function webDefineWar()
+{
+    echo "WEB DEFINE WAR - INIT"
+    cd /rpmWeb
+    rm * -f
+    prodCopy "/home/jesus/webapps/*.jar"
+    echo "WEB DEFINE WAR - END"
+}
+
+#0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+function webDefineNotWar()
+{
+
+
+}
+
+# 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+function webDefine()
+{
+    webDefineWar
+    webDefineNotWar
+
+    cd /rpmWeb
+    _tar "/rpmSources/$_SOURCES_FOLDER/web.tar.gz" "*"
+}
+
+
 #0.11.0 - COLLABORATE Space - RPM - Gateway - 1811280852
 function gatewayDefinePrepare()
 {
@@ -103,20 +147,6 @@ function gatewayDefine()
     # delete previous versions
     gatewayDefinePrepare
 
-#    _gatewayDefineSource=\\\\192.168.1.253\\Versions\\VAS\\Gateways\\SpontaniaGateway\\x64
-#    _gatewayDefineTarget=/rpmGateway
-#    _gatewayDefineParam="user=jesus.bernad,uid=5000,gid=6000,pass=clearone2015!"
-#    umount $_gatewayDefineTarget
-#    # --parents No error if existing
-#    mkdir $_gatewayDefineTarget --parents
-#    mount.cifs $_gatewayDefineSource $_gatewayDefineTarget -o $_gatewayDefineParam
-#    cd $_gatewayDefineTarget
-#
-#    _gatewayDefineVersions=(`ls --sort=time --format=single-column /rpmGateway`)
-
-#    _gatewayDefineLastVersion=${_gatewayDefineVersions[0]}
-#    echo $_gatewayDefineLastVersion
-
     gatewayDefineLastVersion
     cd $_GATEWAY_VERSION/RPMS
 
@@ -130,7 +160,9 @@ function collaborateJarDefine()
 
     cd /rpmJar
     rm * -f
-    sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/collaborate/* .
+    # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+    prodCopy "/home/jesus/tomcat/lib/collaborate/*"
+#    sshpass -p One2015! scp jesus@im.collaboratespace.net:/home/jesus/tomcat/lib/collaborate/* .
     tar --create --gzip --verbose --file=/rpmSources/$_SOURCES_FOLDER/$_collaborateJarDefineFileName *
 }
 
