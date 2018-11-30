@@ -116,17 +116,17 @@ function webDefineWar()
 }
 
 #0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
-function webDefineNotWar()
-{
-
-
-}
+#function webDefineNotWar()
+#{
+#
+#
+#}
 
 # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
 function webDefine()
 {
     webDefineWar
-    webDefineNotWar
+    #webDefineNotWar
 
     cd /rpmWeb
     _tar "/rpmSources/$_SOURCES_FOLDER/web.tar.gz" "*"
