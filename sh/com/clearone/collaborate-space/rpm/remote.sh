@@ -112,19 +112,11 @@ function webDefineWar()
 {
     echo "WEB DEFINE WAR - INIT"
     cd /rpmWeb
-    # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
-    fileDelete *
-#    rm * -f
-    prodCopy "/home/jesus/webapps/*.jar"
+    _fileDelete "*.war"
+    prodCopy "/home/jesus/webapps/*.war"
     echo "WEB DEFINE WAR - END"
 }
 
-#0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
-#function webDefineNotWar()
-#{
-#
-#
-#}
 
 # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
 function webDefine()
