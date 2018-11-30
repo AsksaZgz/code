@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-. ./setup.sh
+. /sh/com/clearone/collaborate-space/rpm/setup.sh
 . /sh/tool/tar.sh
+. /sh/tool/file.sh
+
 
 _REMOTE_CREATE_TARBALL=''
 _SPEC=COLLABORATE-Space.spec
@@ -110,7 +112,9 @@ function webDefineWar()
 {
     echo "WEB DEFINE WAR - INIT"
     cd /rpmWeb
-    rm * -f
+    # 0.13.0 - COLLABORATE Space - RPM - Web - 181811291317
+    fileDelete *
+#    rm * -f
     prodCopy "/home/jesus/webapps/*.jar"
     echo "WEB DEFINE WAR - END"
 }
