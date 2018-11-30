@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+### https://docs.google.com/document/d/1djVPYrFdqKioBohE5-YPGJ0j0X6toVVGWCE84PNPohI/edit?usp=sharing
 . /sh/dev/log.sh
 . ./setup.sh
 
