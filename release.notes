@@ -9,14 +9,6 @@ CODE
         Portal
         com.clearone.collaborate.services
 
-    Not .war:
-        CollaborateWeb
-    https://tomcat.apache.org/tomcat-8.0-doc/manager-howto.html#Reload_An_Existing_Application
-    options: {
-      livereload: true
-    },
-
-
 
 0.12.0 - COLLABORATE Space - RPM - JAR - 1811281514
 

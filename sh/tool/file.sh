@@ -2,7 +2,7 @@
 
 ### https://ss64.com/bash/syntax-variables.html
 
-function _fileDelete()
+function fileDelete()
 {
     _deleteExitCode=$?
     _deleteTarget=$1
@@ -11,4 +11,13 @@ function _fileDelete()
     else
       echo File Not found
     fi
+}
+
+
+function fileTar()
+{
+    _tarTarget=$1
+    _tarSource=$2
+
+    tar --create --gzip --verbose --file=$_tarTarget $_tarSource
 }
